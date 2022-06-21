@@ -11,8 +11,8 @@ public class Meta : MonoBehaviour
     
     // Событие, возникающее после загрузки JSON со всеми картами
     public UnityAction OnAllCardInfoLoad;
-
-    private UI_playerCardVC ui_playerCardVC;
+    
+    private PlayerCardController playerCardController;
     
     public int stars;
     public int crystal;
@@ -30,8 +30,8 @@ public class Meta : MonoBehaviour
 
     public void Start()
     {
-        ui_playerCardVC = GetComponent<UI_playerCardVC>();
-        ui_playerCardVC.Init();
+        playerCardController = GetComponent<PlayerCardController>();
+        playerCardController.Init();
 
         LoadAllJSONs();
     }
