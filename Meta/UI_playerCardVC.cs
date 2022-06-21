@@ -5,16 +5,16 @@ using UnityEngine.UI;
 public class UI_playerCardVC : MonoBehaviour
 {
     private Meta Meta;
-    public GameObject Content;
-    public GameObject ImagePrefab;
+    public GameObject PlayerCardUIContainer;    // Контейнер UI для карт
+    public GameObject PlayerCardPrefab; 
 
-    public void Start()
+    public void Init()
     {
         Meta = gameObject.GetComponent<Meta>();
-        Meta.OnAllCardInfoLoad += Init;
+        Meta.OnAllCardInfoLoad += spawnPlayerCards;    //подписка спавна карт на загрузку всех карт из JSON
     }
 
-    void Init()
+    void spawnPlayerCards()
     {
         var cardsCount = Meta.playerCards.playerDecks[Meta.activeDeck].cards.Count;
         Debug.Log($"Init: aDeck:{Meta.activeDeck}, count({cardsCount})");
@@ -22,22 +22,22 @@ public class UI_playerCardVC : MonoBehaviour
         ClearPreviousContent();
         for (int i = 0; i < cardsCount; i++)
         {
-            GameObject go = GameObject.Instantiate(ImagePrefab, Vector3.zero, Quaternion.identity, Content.transform);
-            int cID = Meta.playerCards.playerDecks[Meta.activeDeck].cards[i];
-            PlayerCard playerCard = Meta.playerCards.playerCards[cID];
-            int gcID = playerCard.cardId;
-            string imgPath = Meta.allCardsInfo[gcID].image;
+            GameObject go = GameObject.Instantiate(PlayerCardPrefab, Vector3.zero, Quaternion.identity, PlayerCardUIContainer.transform);
+            int localCardID = Meta.playerCards.playerDecks[Meta.activeDeck].cards[i];
+            PlayerCard playerCard = Meta.playerCards.playerCards[localCardID];
+            int globalCardID = playerCard.cardId;
+            string imgPath = Meta.allCardsInfo[globalCardID].image;
             
-            go.GetComponent<PlayerCardBtn>().Init(gcID, imgPath);
+            go.GetComponent<PlayerCardBtn>().Init(globalCardID, imgPath);
             
         }
     }
 
     void ClearPreviousContent()
     {
-        for (int i = Content.transform.childCount-1; i >= 0 ; i--)
+        for (int i = PlayerCardUIContainer.transform.childCount-1; i >= 0 ; i--)
         {
-            Destroy(Content.transform.GetChild(i).gameObject);
+            Destroy(PlayerCardUIContainer.transform.GetChild(i).gameObject);
         }
     }
 }

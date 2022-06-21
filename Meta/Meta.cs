@@ -7,7 +7,9 @@ using Random = UnityEngine.Random;
 
 [Serializable]
 public class Meta : MonoBehaviour
-{
+{    // Мета игры
+    
+    // Событие, возникающее после загрузки JSON со всеми картами
     public UnityAction OnAllCardInfoLoad;
 
     private UI_playerCardVC ui_playerCardVC;
@@ -15,23 +17,23 @@ public class Meta : MonoBehaviour
     public int stars;
     public int crystal;
     
+    // Ссылка на JSON с описанием всех карт
     public TextAsset allCardsInfoAsset;
     public AllCardsInfo allCardsInfo;
-    
-    public int activeDeck;
-    
+
+    // Ссылка на JSON с картами игрока
     public TextAsset playerCardsAsset;
     public PlayerCards playerCards;
+
+    // индекс активной колоды игрока
+    public int activeDeck;
 
     public void Start()
     {
         ui_playerCardVC = GetComponent<UI_playerCardVC>();
-        ui_playerCardVC.Start();
-        
-        allCardInfoLoad();
-        playerCardsLoad();
-        
-        OnAllCardInfoLoad?.Invoke();
+        ui_playerCardVC.Init();
+
+        LoadAllJSONs();
     }
 
     public void Update()
@@ -43,14 +45,24 @@ public class Meta : MonoBehaviour
         }*/
     }
 
+    private void LoadAllJSONs()
+    {// Загрузка всех JSON
+        allCardInfoLoad();
+        playerCardsLoad();
+        
+        OnAllCardInfoLoad?.Invoke();
+    }
+
     private void allCardInfoLoad()
-    {
+    {// Загрузка JSON с описанием всех карт
         allCardsInfo = JsonUtility.FromJson<AllCardsInfo>(allCardsInfoAsset.text);
     }
+
     private void playerCardsLoad()
-    {
+    { // Загрузка JSON с описанием карт игрока
         playerCards = JsonUtility.FromJson<PlayerCards>(playerCardsAsset.text);
     }
+    
 }
 
 

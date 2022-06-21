@@ -1,25 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 [Serializable]
 public class AllCardsInfo
-{
+{    // JSON-класс с описанием всех карт (ДАТА)
+    
+    //карты
     public List<CardInfo> cards;
-
-    public CardInfo this[int id] //выдает инфу карты по id
+    
+    public CardInfo this[int id] //индексатор инфы карты по id
     {
-        get
-        {
-            return cards.Find((x) => x.id == id);
-        }
-        //set { cards[i] = value; }
+        get => cards.Find((x) => x.id == id);
     }
 }
 
 [Serializable]
 public class CardInfo
-{
+{    // Инфа по карте
     public int id;
     public string image;
     public DeckType deckType;

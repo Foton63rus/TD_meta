@@ -5,7 +5,7 @@ using UnityEngine;
 
 [Serializable]
 public class PlayerCards
-{
+{    // JSON-класс о картах, которые имеет игрок
     public int activeDeck;
     public List<PlayerCard> playerCards;
     public List<PlayerDeck> playerDecks;
