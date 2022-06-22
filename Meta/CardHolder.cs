@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardHolder : MonoBehaviour
+namespace TowerDefence
 {
-    public TextAsset asset;
-    public AllCardsInfo allCards;
-    void Start()
+    public class CardHolder : MonoBehaviour
     {
-        allCards = JsonUtility.FromJson<AllCardsInfo>(asset.text);
-        Debug.Log( $"{allCards.cards[0].image}" );
+        public TextAsset asset;
+        public AllCardsInfo allCards;
+        void Start()
+        {
+            allCards = JsonUtility.FromJson<AllCardsInfo>(asset.text);
+            Debug.Log( $"{allCards.cards[0].image}" );
+        }
     }
 }
+
