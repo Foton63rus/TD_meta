@@ -1,29 +1,24 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace TowerDefence
 {
-    [Serializable] //Монобех, который вешается на Мету и хранит ссылки на контроллеры
+    [Serializable] //Монобех, который вешается на Мету и хранит ссылку на объект с контроллерами
     public class ControllerContainer : MonoBehaviour
     {    
-        [SerializeField] // Список контроллеров
-        private List<Controller> _controllers;
-
-        public Dictionary<string, Controller> controllers;
+        [SerializeField] // GameObject, на который вешаем все контроллы
+        private GameObject goControllers;
 
         //Инициализация всех контроллов
         public void Init(Meta meta)
         {
-            controllers = new Dictionary<string, Controller>();
-            if (_controllers.Count > 0)
+            Component[] components = goControllers.GetComponents(typeof(Controller));
+            if (components.Length > 0)
             {
-                foreach (Controller controller in _controllers)
+                foreach (Controller component in components)
                 {
-                    controllers[typeof(Controller).Name] = controller;
-                    Debug.Log(controller.GetType().ToString());
-                    controller.Init( meta);
+                    component.Init(meta);
+                    //Debug.Log( $"name: {component.GetType().Name}" );
                 }
             }
         }
@@ -35,7 +30,7 @@ namespace TowerDefence
     }
 
     public abstract class Controller : MonoBehaviour, IController
-    {
+    {    //Все контроллеры нужно наследовать от этого класса
         public virtual void Init(Meta meta)
         {   //Так как в этом классе реализована интерфейс IController, то нужно в каждом классе оверрайдить метод Инит
             throw new Exception("Нужно добавить override для метода Init в контроллере");

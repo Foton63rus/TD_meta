@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,29 +17,28 @@ namespace TowerDefence
         public override void Init( Meta meta)
         {
             this.meta = meta;
-            this.meta.OnAllCardInfoLoad += spawnPlayerCards;    //подписка спавна карт на загрузку всех карт из JSON
+            this.meta.onAllCardInfoLoad += spawnPlayerCards;    //подписка спавна карт на загрузку всех карт из JSON
             View.Init( this, PlayerCardPrefab );    //Инициализация вьюхи
         }
 
         void spawnPlayerCards()
         {
-            int cardsCount = meta.playerCards.playerDecks[meta.activeDeck].cards.Count;
-
+            int cardsCount = meta.data.playerCards.playerDecks[meta.data.playerCards.activeDeck].cards.Count;
             ClearPlayerCards();
         
             for (int i = 0; i < cardsCount; i++)
             {
-                int localCardID = meta.playerCards.playerDecks[meta.activeDeck].cards[i];
-                PlayerCard playerCard = meta.playerCards.playerCards[localCardID];
+                int localCardID = meta.data.playerCards.playerDecks[meta.data.playerCards.activeDeck].cards[i];
+                PlayerCard playerCard = meta.data.playerCards.playerCards[localCardID];
                 int globalCardID = playerCard.cardId;
-                string imgPath = meta.allCardsInfo[globalCardID].image;
+                string imgPath = meta.data.allCardsInfo[globalCardID].image;
 
                 AddNewCard(globalCardID, imgPath);
             }
         }
 
         private void AddNewCard(int cardID, string imageSource)
-        {
+        {    //Добавить карту
             OnPlayerCardDrawNewOne?.Invoke(cardID, imageSource);
         }
         private void ClearPlayerCards()
