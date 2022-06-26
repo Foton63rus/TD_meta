@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 namespace TowerDefence
@@ -8,11 +7,8 @@ namespace TowerDefence
     [Serializable]
     public class Meta : MonoBehaviour
     {    // Мета игры
-        public DataContainer metaData;
-        public ControllerContainer controllers;
-
-        // Событие, возникающее после загрузки JSON со всеми картами
-        public UnityAction onAllCardInfoLoad;
+        private DataContainer metaData;
+        private ControllerContainer controllers;
 
         public Data data;
 
@@ -23,15 +19,16 @@ namespace TowerDefence
         }
 
         private void InitMetaData()
-        {
+        {    //Инициализация Даты
             metaData = GetComponent<DataContainer>();
             metaData.Init(this);
         }
 
         private void InitControllers()
-        {
+        {    //Инициализация Контроллеров
             controllers = GetComponent<ControllerContainer>();
             controllers.Init(this);
         }
+        
     }
 }

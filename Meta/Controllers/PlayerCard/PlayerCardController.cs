@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,20 +6,25 @@ namespace TowerDefence
 {
     public class PlayerCardController : Controller
     {
-        public UnityAction<int, string> OnPlayerCardDrawNewOne;
-        public UnityAction OnPlayerCardsClearAll;
-    
+        //public UnityAction<int, string> OnPlayerCardDrawNewOne;
+        //public UnityAction OnPlayerCardsClearAll;
+
         private Meta meta;
-        [SerializeField]
-        private PlayerCardView View;    // Контейнер UI для карт
-        [SerializeField]
-        private GameObject PlayerCardPrefab;
+        [SerializeField] private PlayerCardView View;    // Контейнер UI для карт
+        [SerializeField] private GameObject PlayerCardPrefab;
+        [SerializeField] private TextAsset allCardsInfoAsset;
+        [SerializeField] private TextAsset playerCardsAsset;
 
         public override void Init( Meta meta)
         {
             this.meta = meta;
-            this.meta.onAllCardInfoLoad += spawnPlayerCards;    //подписка спавна карт на загрузку всех карт из JSON
+            
+            meta.data.allCardsInfo = JsonUtility.FromJson<AllCardsInfo>(allCardsInfoAsset.text);
+            meta.data.playerCards = JsonUtility.FromJson<PlayerCards>(playerCardsAsset.text);
+            
             View.Init( this, PlayerCardPrefab );    //Инициализация вьюхи
+
+            spawnPlayerCards();
         }
 
         void spawnPlayerCards()
@@ -39,11 +45,13 @@ namespace TowerDefence
 
         private void AddNewCard(int cardID, string imageSource)
         {    //Добавить карту
-            OnPlayerCardDrawNewOne?.Invoke(cardID, imageSource);
+            //OnPlayerCardDrawNewOne?.Invoke(cardID, imageSource);
+            EventController.Invoke(new OnPlayerCardDrawNewOne(cardID, imageSource));
         }
         private void ClearPlayerCards()
         {    //почистить список карт игрока
-            OnPlayerCardsClearAll?.Invoke();
+            //OnPlayerCardsClearAll?.Invoke();
+            EventController.Invoke( new OnPlayerCardsClearAll());
         }
     }
 }
