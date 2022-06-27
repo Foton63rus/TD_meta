@@ -20,6 +20,13 @@
 			"cardType": 0,
 			"currency": 3,
 			"price": 300
+		},
+		{
+			"slotType": 1,
+			"deckType": 3,
+			"cardType": 0,
+			"currency": 0,
+			"price": 500
 		}
 	]
 }

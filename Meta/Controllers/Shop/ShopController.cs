@@ -18,7 +18,8 @@ namespace TowerDefence
             this.meta = meta;
             meta.data.shop = JsonUtility.FromJson<Shop>(jsonShopAsset.text);
             view.Init(this, ShopSlotPrefab);
-            
+
+            spawnShopSlotItems();
         }
         
         void spawnShopSlotItems()
@@ -28,12 +29,28 @@ namespace TowerDefence
         
             for (int i = 0; i < slotsCount; i++)
             {
-                /*int localCardID = meta.data.playerCards.playerDecks[meta.data.playerCards.activeDeck].cards[i];
-                PlayerCard playerCard = meta.data.playerCards.playerCards[localCardID];
-                int globalCardID = playerCard.cardId;
-                string imgPath = meta.data.allCardsInfo[globalCardID].image;
+                SlotType visible = meta.data.shop.shopSlots[i].slotType;
+                string imgPath;
+                if (visible == SlotType.Hidden)
+                {
+                    imgPath = "Shirt_stripes_01";
+                }
+                else
+                {
+                    imgPath = "Shirt_stripes_01"; // тут потом заменить на подгружаемую
+                }
+                Currency currency = meta.data.shop.shopSlots[i].currency;
+                int price = meta.data.shop.shopSlots[i].price;
+                CardType cardType = meta.data.shop.shopSlots[i].cardType;
+                DeckType deckType = meta.data.shop.shopSlots[i].deckType;
 
-                AddNewSlotItem(globalCardID, imgPath);*/
+                EventController.Invoke( new OnShopSlotAddNew( 
+                    visible,
+                    imgPath,
+                    currency,
+                    price,
+                    cardType,
+                    deckType));
             }
         }
 

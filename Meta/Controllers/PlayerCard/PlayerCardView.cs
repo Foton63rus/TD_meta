@@ -24,7 +24,7 @@ namespace TowerDefence
         public void AddNewCard( int globalCardID, string imgPath )
         {
             //создаем карту
-            GameObject newCard = Instantiate(_cardPrefab, Vector3.zero, Quaternion.identity, _transform);
+            GameObject newCard = Instantiate(_cardPrefab, _transform);
             //назначаем картинку для карты
             newCard.GetComponent<Image>().sprite = Resources.Load<Sprite>(imgPath);
             //сохраняем в карте значение её ID
