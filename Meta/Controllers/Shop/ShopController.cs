@@ -7,6 +7,7 @@ namespace TowerDefence
     public class ShopController : Controller
     {
         private Meta meta;
+        private ShopClient client;
         [SerializeField] private ShopView view;
         [SerializeField] private GameObject ShopSlotPrefab;
         [SerializeField] private TextAsset jsonShopAsset;
@@ -16,6 +17,7 @@ namespace TowerDefence
         public override void Init(Meta meta)
         {
             this.meta = meta;
+            client = new ShopClient(meta);
             meta.data.shop = JsonUtility.FromJson<Shop>(jsonShopAsset.text);
             view.Init(this, ShopSlotPrefab);
 
@@ -39,18 +41,8 @@ namespace TowerDefence
                 {
                     imgPath = "Shirt_stripes_01"; // тут потом заменить на подгружаемую
                 }
-                Currency currency = meta.data.shop.shopSlots[i].currency;
-                int price = meta.data.shop.shopSlots[i].price;
-                CardType cardType = meta.data.shop.shopSlots[i].cardType;
-                DeckType deckType = meta.data.shop.shopSlots[i].deckType;
 
-                EventController.Invoke( new OnShopSlotAddNew( 
-                    visible,
-                    imgPath,
-                    currency,
-                    price,
-                    cardType,
-                    deckType));
+                EventController.Invoke( new OnShopSlotAddNew( meta.data.shop.shopSlots[i], imgPath, i ));
             }
         }
 

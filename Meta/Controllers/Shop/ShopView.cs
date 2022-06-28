@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,10 +20,12 @@ namespace TowerDefence
         {
             GameObject newSlot = Instantiate(_shopSlotPrefab, transform);
             ShopSlotMono mono = newSlot.GetComponent<ShopSlotMono>();
+            mono.slotInfo = arg;
+            mono.indexInShopSlot = arg.indexInShopSlot;
 
-            mono.goHeader.GetComponent<TextMeshProUGUI>().text = arg.deckType.ToString();
+            mono.goHeader.GetComponent<TextMeshProUGUI>().text = arg.shopSlot.deckType.ToString();
             
-            if (arg.visible == SlotType.Hidden)
+            if (arg.shopSlot.slotType == SlotType.Hidden)
             {
                 newSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(arg.imgPath);
             }
@@ -35,16 +35,16 @@ namespace TowerDefence
                 //newSlot.GetComponent<Image>().sprite = Resources.Load<Sprite>(arg.imgPath);
             }
 
-            if ( arg.currency == Currency.GameMoney)
+            if ( arg.shopSlot.currency == Currency.GameMoney)
             {
-                mono.goFooterPrice.GetComponent<TextMeshProUGUI>().text = arg.price.ToString();
+                mono.goFooterPrice.GetComponent<TextMeshProUGUI>().text = arg.shopSlot.price.ToString();
                 mono.goCurrency.GetComponent<Image>().sprite = Resources.Load<Sprite>("brilliant");
-            } else if (arg.currency == Currency.RealMoney)
+            } else if (arg.shopSlot.currency == Currency.RealMoney)
             {
-                mono.goFooterPrice.GetComponent<TextMeshProUGUI>().text = arg.price.ToString();
+                mono.goFooterPrice.GetComponent<TextMeshProUGUI>().text = arg.shopSlot.price.ToString();
                 mono.goCurrency.GetComponent<Image>().sprite = Resources.Load<Sprite>("coins");
             }
-            else if(arg.currency == Currency.Ads)
+            else if(arg.shopSlot.currency == Currency.Ads)
             {
                 mono.goFooterPrice.GetComponent<TextMeshProUGUI>().text = "";
                 mono.goCurrency.GetComponent<Image>().sprite = Resources.Load<Sprite>("ads");
@@ -54,6 +54,13 @@ namespace TowerDefence
                 mono.goFooterPrice.GetComponent<TextMeshProUGUI>().text = "FREE";
                 mono.goCurrency.SetActive(false);
             }
+            
+            newSlot.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                EventController.Invoke( new OnTryingToBuy( 
+                    mono.indexInShopSlot, 
+                    mono.slotInfo.GetHashCode() ));
+            } );
             //mono.goCurrency.GetComponent<Image>().sprite
         }
 

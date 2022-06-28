@@ -22,6 +22,8 @@ namespace TowerDefence
         {    //Инициализация Даты
             metaData = GetComponent<DataContainer>();
             metaData.Init(this);
+
+            fakeCurrencyLoad();
         }
 
         private void InitControllers()
@@ -29,6 +31,13 @@ namespace TowerDefence
             controllers = GetComponent<ControllerContainer>();
             controllers.Init(this);
         }
-        
+
+        private void fakeCurrencyLoad()
+        {
+            data.gameCurrency.Add(new GameCurrency( Currency.Free, 10));
+            data.gameCurrency.Add(new GameCurrency( Currency.Ads, 3));
+            data.gameCurrency.Add(new GameCurrency( Currency.GameMoney, 499));
+            data.gameCurrency.Add(new GameCurrency( Currency.RealMoney, 70000));
+        }
     }
 }
