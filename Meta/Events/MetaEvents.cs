@@ -1,23 +1,22 @@
-using System;
-using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace TowerDefence
 {
-    public class MetaEvents { }
+    public static class MetaEvents
+    {
+        public static UnityAction OnPlayerCardsClearAll; //Событие очистки карт игрока (отрисовка)
+        public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardDrawNewOne; //Событие добавления карты (отрисовка)
+    }
     
     
     //EVENT ARGS
-    
-    //При событии очистки карт игрока (отрисовка)
-    public struct OnPlayerCardsClearAll{}
-
-    //При событии добавления карты (отрисовка)
-    public struct OnPlayerCardDrawNewOne
+    [SerializeField] public struct OnPlayerCardDrawNewOneEventArgs
     {
         public int cardID;
         public string imageSource;
 
-        public OnPlayerCardDrawNewOne(int cardID, string imageSource)
+        public OnPlayerCardDrawNewOneEventArgs(int cardID, string imageSource)
         {
             this.cardID      = cardID;
             this.imageSource = imageSource;

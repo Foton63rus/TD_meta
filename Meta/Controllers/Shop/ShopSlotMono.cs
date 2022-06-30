@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace TowerDefence
@@ -11,7 +8,7 @@ namespace TowerDefence
         public GameObject goFooterPrice;
         public GameObject goCurrency;
         
-        public OnShopSlotAddNew slotInfo;
+        public OnShopSlotAddNewEventArgs slotInfo;
         public int indexInShopSlot;
     }
 }

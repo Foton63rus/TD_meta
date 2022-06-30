@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace TowerDefence
 {
-    public class ShopView : MonoBehaviour, IReceive<OnShopSlotAddNew>
+    public class ShopView : MonoBehaviour
     {
         private ShopController _controller;
         private GameObject _shopSlotPrefab;
@@ -12,11 +12,15 @@ namespace TowerDefence
         {
             _controller = controller;
             _shopSlotPrefab = shopSlotPrefab;
+
+            ShopEvents.OnShopSlotsClearAll -= ShopSlotClearAll;
+            ShopEvents.OnShopSlotsClearAll += ShopSlotClearAll;
             
-            EventController.Add(this);
+            ShopEvents.OnShopSlotAddNew -= OnShopSlotAddNewHandler;
+            ShopEvents.OnShopSlotAddNew += OnShopSlotAddNewHandler;
         }
 
-        public void AddNewShopSlot( in OnShopSlotAddNew arg )
+        public void AddNewShopSlot( OnShopSlotAddNewEventArgs arg )
         {
             GameObject newSlot = Instantiate(_shopSlotPrefab, transform);
             ShopSlotMono mono = newSlot.GetComponent<ShopSlotMono>();
@@ -57,16 +61,23 @@ namespace TowerDefence
             
             newSlot.GetComponent<Button>().onClick.AddListener(() =>
             {
-                EventController.Invoke( new OnTryingToBuy( 
+                ShopEvents.OnTryingToBuy?.Invoke( new OnTryingToBuyEventArgs( 
                     mono.indexInShopSlot, 
                     mono.slotInfo.GetHashCode() ));
             } );
-            //mono.goCurrency.GetComponent<Image>().sprite
         }
 
-        public void HandleSignal(in OnShopSlotAddNew arg)
+        public void OnShopSlotAddNewHandler(OnShopSlotAddNewEventArgs arg)
         {
             AddNewShopSlot(arg);
+        }
+
+        public void ShopSlotClearAll()
+        {
+            for (int i = transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(transform.GetChild(i));
+            }
         }
     }
 }

@@ -41,18 +41,17 @@ namespace TowerDefence
                 {
                     imgPath = "Shirt_stripes_01"; // тут потом заменить на подгружаемую
                 }
-
-                EventController.Invoke( new OnShopSlotAddNew( meta.data.shop.shopSlots[i], imgPath, i ));
+                AddNewSlotItem( new OnShopSlotAddNewEventArgs( meta.data.shop.shopSlots[i], imgPath, i ));
             }
         }
 
-        private void AddNewSlotItem(int cardID, string imageSource)
+        private void AddNewSlotItem(OnShopSlotAddNewEventArgs args)
         {    //Добавить карту
-            //onPlayerCardDrawNewOne?.Invoke(cardID, imageSource);
+            ShopEvents.OnShopSlotAddNew?.Invoke( args);
         }
         private void ClearShopSlots()
         {    //почистить слоты магазина
-            //onPlayerCardsClearAll?.Invoke();
+            ShopEvents.OnShopSlotsClearAll?.Invoke();
         }
     }
 }

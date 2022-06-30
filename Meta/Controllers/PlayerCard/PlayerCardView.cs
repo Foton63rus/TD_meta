@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 namespace TowerDefence
 {
-    public class PlayerCardView : MonoBehaviour, 
-        IReceive<OnPlayerCardsClearAll>, IReceive<OnPlayerCardDrawNewOne>
+    public class PlayerCardView : MonoBehaviour
     {   
         private Transform _transform;
         private PlayerCardController _controller;
@@ -15,10 +14,10 @@ namespace TowerDefence
             _transform  = transform;
             _controller = controller;
             _cardPrefab = cardPrefab;
-
-            EventController.Add(this);
-            //_controller.OnPlayerCardsClearAll  += ClearPreviousCards;
-            //_controller.OnPlayerCardDrawNewOne += AddNewCard;
+            
+            MetaEvents.OnPlayerCardsClearAll  += OnPlayerCardsClearAllHandler;
+            MetaEvents.OnPlayerCardDrawNewOne  += OnPlayerCardDrawNewOneHandler;
+            
         }
 
         public void AddNewCard( int globalCardID, string imgPath )
@@ -36,17 +35,12 @@ namespace TowerDefence
             } );
         }
 
-        public void HandleSignal(in OnPlayerCardDrawNewOne arg)
+        public void OnPlayerCardDrawNewOneHandler(OnPlayerCardDrawNewOneEventArgs arg)
         {
             AddNewCard(arg.cardID, arg.imageSource);
         }
 
-        public void HandleSignal(in OnPlayerCardsClearAll arg)
-        {
-            ClearPreviousCards();
-        }
-
-        public void ClearPreviousCards()
+        public void OnPlayerCardsClearAllHandler()
         {
             for (int i = _transform.childCount-1; i >= 0 ; i--)
             {
