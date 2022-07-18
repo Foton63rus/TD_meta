@@ -16,6 +16,7 @@ namespace TowerDefence
         {
             InitMetaData();
             InitControllers();
+            
         }
 
         private void InitMetaData()

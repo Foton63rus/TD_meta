@@ -53,12 +53,11 @@ namespace TowerDefence
         
         public void OnTryingToBuyHandler( OnTryingToBuyEventArgs arg)
         {
-            Debug.Log($" {arg.itemHashCode} ");
             if (checkTryToBuy(arg))
             {
-                //EventController.Invoke( arg );
+                //ShopEvents.GetBuyCard.Invoke(new POSTRequestBuyCardEArgs( arg ));
+                Debug.Log("На этом этапе закнчиться проверка на покупку со стороны клиента и далее должна быть отправка на сервер запроса");
             }
-            checkTryToBuy(arg);
         }
 
         public ShopClient(Meta meta)

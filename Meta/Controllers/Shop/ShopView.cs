@@ -43,7 +43,8 @@ namespace TowerDefence
             {
                 mono.goFooterPrice.GetComponent<TextMeshProUGUI>().text = arg.shopSlot.price.ToString();
                 mono.goCurrency.GetComponent<Image>().sprite = Resources.Load<Sprite>("brilliant");
-            } else if (arg.shopSlot.currency == Currency.RealMoney)
+            } 
+            else if (arg.shopSlot.currency == Currency.RealMoney)
             {
                 mono.goFooterPrice.GetComponent<TextMeshProUGUI>().text = arg.shopSlot.price.ToString();
                 mono.goCurrency.GetComponent<Image>().sprite = Resources.Load<Sprite>("coins");
