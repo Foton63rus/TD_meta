@@ -7,7 +7,7 @@ namespace TowerDefence
     {
         public Currency currency;
         public int count;
-
+        
         public GameCurrency(Currency currency, int count)
         {
             this.currency = currency;

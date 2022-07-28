@@ -9,7 +9,6 @@ namespace TowerDefence
         public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardDrawNewOne; //Событие добавления карты (отрисовка)
     }
     
-    
     //EVENT ARGS
     [SerializeField] public struct OnPlayerCardDrawNewOneEventArgs
     {

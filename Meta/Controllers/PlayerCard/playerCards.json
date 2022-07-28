@@ -20,6 +20,12 @@
             "id": 0,
             "deckType": 0,
             "cards": [0, 1, 2]
+        },
+        {
+            "id": 1,
+            "deckType": 3,
+            "cards": [1, 2]
         }
-    ]
+    ],
+    "activeDeckID": 1
 }

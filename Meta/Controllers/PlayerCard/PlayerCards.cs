@@ -8,7 +8,7 @@ namespace TowerDefence
     [Serializable]
     public class PlayerCards
     {    // JSON-класс о картах, которые имеет игрок
-        public int activeDeck;
+        public int activeDeckID;
         public List<PlayerCard> playerCards;
         public List<PlayerDeck> playerDecks;
 
@@ -61,7 +61,7 @@ namespace TowerDefence
         {
             if (index <= playerDecks.Count - 1 && index >= 0)
             {
-                activeDeck = index;
+                activeDeckID = index;
             };
         }
     }

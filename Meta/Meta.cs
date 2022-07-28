@@ -35,10 +35,15 @@ namespace TowerDefence
 
         private void fakeCurrencyLoad()
         {
-            data.gameCurrency.Add(new GameCurrency( Currency.Free, 10));
+            data.gameCurrency.Add(10);    //Currency.Free
+            data.gameCurrency.Add(3);     //Currency.Ads
+            data.gameCurrency.Add(499);   //Currency.GameMoney
+            data.gameCurrency.Add(70000); //Currency.RealMoney
+
+            /*data.gameCurrency.Add(new GameCurrency( Currency.Free, 10));
             data.gameCurrency.Add(new GameCurrency( Currency.Ads, 3));
             data.gameCurrency.Add(new GameCurrency( Currency.GameMoney, 499));
-            data.gameCurrency.Add(new GameCurrency( Currency.RealMoney, 70000));
+            data.gameCurrency.Add(new GameCurrency( Currency.RealMoney, 70000));*/
         }
     }
 }

@@ -4,7 +4,9 @@ using UnityEngine.UI;
 namespace TowerDefence
 {
     public class PlayerCardView : MonoBehaviour
-    {   
+    {
+        public Button nextDeckBtn;
+        
         private Transform _transform;
         private PlayerCardController _controller;
         private GameObject _cardPrefab;
@@ -18,6 +20,7 @@ namespace TowerDefence
             MetaEvents.OnPlayerCardsClearAll  += OnPlayerCardsClearAllHandler;
             MetaEvents.OnPlayerCardDrawNewOne  += OnPlayerCardDrawNewOneHandler;
             
+            nextDeckBtn.onClick.AddListener(() => { OnNextDeck();});
         }
 
         public void AddNewCard( int globalCardID, string imgPath )
@@ -46,6 +49,11 @@ namespace TowerDefence
             {
                 Destroy(_transform.GetChild(i).gameObject);
             }
+        }
+
+        public void OnNextDeck()
+        {
+            _controller.nextDeck();
         }
     }
 }
