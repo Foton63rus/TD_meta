@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TowerDefence
 {
@@ -62,34 +63,37 @@ namespace TowerDefence
         {
             CardShopSlot slot = meta.data.shop.shopSlots[args.indexInShopList];
             var currency = meta.data.gameCurrency;
-            
-            if (slot.currency == Currency.Free && 
-                meta.data.gameCurrency[0]>0)
+
+            if ( (slot.currency == Currency.Free || slot.currency == Currency.Ads) && 
+                 currency[(int) slot.currency] > 0)
             {
-                currency[0] = currency[0] - 1;
-                Debug.Log($"{currency[0]}" );
+                currency[(int) slot.currency] = currency[(int) slot.currency] - 1;
+                findCard( slot );
             }
-            else if (slot.currency == Currency.Ads && 
-                     currency[1]>0)
+            else if ( (slot.currency == Currency.GameMoney || slot.currency == Currency.RealMoney) && 
+                      currency[(int) slot.currency] >= slot.price)
             {
-                currency[1] = currency[1] - 1;
-                Debug.Log($"{currency[1]}" );
+                currency[(int) slot.currency] = currency[(int) slot.currency] - slot.price;
+                findCard( slot );
             }
-            else if (slot.currency == Currency.GameMoney && 
-                     currency[2] >= slot.price)
-            {
-                currency[2] = currency[2] - slot.price;
-                Debug.Log($"{currency[2]}" );
-            }
-            else if (slot.currency == Currency.RealMoney && 
-                     currency[3] >= slot.price)
-            {
-                currency[3] = currency[3] - slot.price;
-                Debug.Log($"{currency[3]}" );
-            }
-            
+
             //if (currency[ Enum.GetValues( typeof(Currency))[1] ] >= slot.price)
             return;
+        }
+
+        public void findCard( CardShopSlot slot )
+        {
+            List<CardInfo> allCardsWithBuyingConditions = meta.data.allCardsInfo.cards.FindAll(x => x.deckType == slot.deckType);
+            if (allCardsWithBuyingConditions.Count > 0)
+            {
+                int rndIndex = Random.Range(0, allCardsWithBuyingConditions.Count);
+                CardInfo newCard = allCardsWithBuyingConditions[rndIndex];
+                Debug.Log($"card: {newCard.deckType} {newCard.image}");
+            }
+            else
+            {
+                Debug.Log("Не нашлось карт с таким типом колоды");
+            }
         }
     }
 }

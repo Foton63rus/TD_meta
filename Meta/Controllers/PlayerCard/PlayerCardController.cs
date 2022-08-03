@@ -6,7 +6,7 @@ namespace TowerDefence
     public class PlayerCardController : Controller
     {
         private Meta _meta;
-        [SerializeField] private PlayerCardView view;    // Контейнер UI для карт
+        [SerializeField] private PlayerCardView view;    // Контейнер UI для карт в текущей колоде
         [SerializeField] private GameObject playerCardPrefab;
         [SerializeField] private TextAsset allCardsInfoAsset;
         [SerializeField] private TextAsset playerCardsAsset;
