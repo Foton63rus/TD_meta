@@ -7,6 +7,7 @@ namespace TowerDefence
     {
         public static UnityAction OnPlayerCardsClearAll; //Событие очистки карт игрока (отрисовка)
         public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardDrawNewOne; //Событие добавления карты (отрисовка)
+        public static UnityAction<CardInfo> OnPlayerCardAdd;
     }
     
     //EVENT ARGS

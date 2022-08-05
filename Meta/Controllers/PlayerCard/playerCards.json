@@ -1,28 +1,28 @@
 {
     "playerCards": [{
-            "id": 0,
+            "localId": 0,
             "cardId": 2,
             "level": 0,
             "count": 1
         }, {
-            "id": 1,
+            "localId": 1,
             "cardId": 1,
             "level": 0,
             "count": 1
         }, {
-            "id": 2,
+            "localId": 2,
             "cardId": 0,
             "level": 0,
             "count": 1
         }
     ],
     "playerDecks": [{
-            "id": 0,
+            "localId": 0,
             "deckType": 0,
             "cards": [0, 1, 2]
         },
         {
-            "id": 1,
+            "localId": 1,
             "deckType": 3,
             "cards": [1, 2]
         }

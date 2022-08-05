@@ -17,6 +17,8 @@ namespace TowerDefence
             
             meta.data.allCardsInfo = JsonUtility.FromJson<AllCardsInfo>(allCardsInfoAsset.text);
             meta.data.playerCards = JsonUtility.FromJson<PlayerCards>(playerCardsAsset.text);
+
+            MetaEvents.OnPlayerCardAdd += addNewCard;
             
             view.Init( this, playerCardPrefab );    //Инициализация вьюхи
             
@@ -35,11 +37,26 @@ namespace TowerDefence
                 int globalCardID = playerCard.cardId;
                 string imgPath = _meta.data.allCardsInfo[globalCardID].image;
 
-                AddNewCard(globalCardID, imgPath);
+                AddNewCardToView(globalCardID, imgPath);
             }
         }
 
-        private void AddNewCard(int cardID, string imageSource)
+        private void addNewCard( CardInfo cardInfo )
+        {
+            //находим карту в открытых картах у игрока с заданным id и уровнем.
+            PlayerCard ExistPlayerCard = _meta.data.playerCards.playerCards.Find( x=> x.cardId == cardInfo.id);
+            if ( ExistPlayerCard == null)
+            {
+                Debug.Log("exist");
+                
+            }
+            else
+            {
+                
+            }
+        }
+
+        private void AddNewCardToView(int cardID, string imageSource)
         {    //Добавить карту
             MetaEvents.OnPlayerCardDrawNewOne?.Invoke(new OnPlayerCardDrawNewOneEventArgs(cardID, imageSource));
         }

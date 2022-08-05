@@ -68,31 +68,34 @@ namespace TowerDefence
                  currency[(int) slot.currency] > 0)
             {
                 currency[(int) slot.currency] = currency[(int) slot.currency] - 1;
-                findCard( slot );
+                randomCardByDeck( slot );
             }
             else if ( (slot.currency == Currency.GameMoney || slot.currency == Currency.RealMoney) && 
                       currency[(int) slot.currency] >= slot.price)
             {
                 currency[(int) slot.currency] = currency[(int) slot.currency] - slot.price;
-                findCard( slot );
+                randomCardByDeck( slot );
             }
 
             //if (currency[ Enum.GetValues( typeof(Currency))[1] ] >= slot.price)
             return;
         }
 
-        public void findCard( CardShopSlot slot )
+        private CardInfo randomCardByDeck( CardShopSlot slot )
         {
             List<CardInfo> allCardsWithBuyingConditions = meta.data.allCardsInfo.cards.FindAll(x => x.deckType == slot.deckType);
             if (allCardsWithBuyingConditions.Count > 0)
             {
                 int rndIndex = Random.Range(0, allCardsWithBuyingConditions.Count);
-                CardInfo newCard = allCardsWithBuyingConditions[rndIndex];
-                Debug.Log($"card: {newCard.deckType} {newCard.image}");
+                CardInfo randomCard = allCardsWithBuyingConditions[rndIndex];
+                Debug.Log($"card: {randomCard.deckType} {randomCard.image}");
+                MetaEvents.OnPlayerCardAdd.Invoke( randomCard );
+                return randomCard;
             }
             else
-            {
-                Debug.Log("Не нашлось карт с таким типом колоды");
+            {    //Debug.Log("Не нашлось карт с таким типом колоды");
+                MetaEvents.OnPlayerCardAdd.Invoke( null );
+                return null;
             }
         }
     }

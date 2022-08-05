@@ -37,7 +37,7 @@ namespace TowerDefence
 
         public void addCartToDeck(int _idFromPlayerCards, int _deckId)
         {    //добавляет карту, которая открыта у игрока, в колоду, если таковая существует
-            if (playerCards.Find(x => (x.id == _idFromPlayerCards)) != null)
+            if (playerCards.Find(x => (x.localId == _idFromPlayerCards)) != null)
             {
                 PlayerDeck deck = playerDecks.Find(x => x.id == _deckId);
                 if (deck == null)
@@ -69,15 +69,15 @@ namespace TowerDefence
     [Serializable]
     public class PlayerCard
     {
-        public int id; //- ID внутри списка карт игрока (те, которые открыл)
+        public int localId; //- ID внутри списка карт игрока (те, которые открыл)
         public int cardId;    //- ID в списке всех карт
         public int level;
         public int count;
         
 
-        public PlayerCard(int _id, int _cardId, int _level = 1, int _count = 1)
+        public PlayerCard(int _localId, int _cardId, int _level = 1, int _count = 1)
         {
-            id = _id;
+            localId = _localId;
             cardId = _cardId;
             level = _level;
             count = _count;
