@@ -18,7 +18,7 @@ namespace TowerDefence
                 x.cardId == _cardId && x.level == _level);
         }
         
-        public void addCardToPlayer(int _cardId, int _level = 1, int _count = 1)
+        public void addCardToPlayer(int _cardId, int _level = 0, int _count = 1)
         {    //добавляем карты игроку, если с таким id и уровнем уже существуют, то добавляем нужное кол-во
             var cardIfPlayerHave = cardByCardIdAndLevel(_cardId, _level);
             if ( cardIfPlayerHave is null )
@@ -75,7 +75,7 @@ namespace TowerDefence
         public int count;
         
 
-        public PlayerCard(int _localId, int _cardId, int _level = 1, int _count = 1)
+        public PlayerCard(int _localId, int _cardId, int _level = 0, int _count = 1)
         {
             localId = _localId;
             cardId = _cardId;
