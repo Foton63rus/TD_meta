@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TowerDefence
@@ -20,7 +21,7 @@ namespace TowerDefence
         
         public void addCardToPlayer(int _cardId, int _level = 0, int _count = 1)
         {    //добавляем карты игроку, если с таким id и уровнем уже существуют, то добавляем нужное кол-во
-            var cardIfPlayerHave = cardByCardIdAndLevel(_cardId, _level);
+            PlayerCard cardIfPlayerHave = cardByCardIdAndLevel(_cardId, _level);
             if ( cardIfPlayerHave is null )
             {
                 playerCards.Add(new PlayerCard(
@@ -32,6 +33,7 @@ namespace TowerDefence
             else
             {
                 cardIfPlayerHave.count += _count;
+                upgradeCardToNextLvl(cardIfPlayerHave.localId, cardIfPlayerHave.level);
             }
         }
 
@@ -50,7 +52,20 @@ namespace TowerDefence
                 }
             } 
         }
+        
+        public void upgradeCardToNextLvl(int localId, int currentLevel)
+        {
+            int minimumForUpgrade = 3; //todo тут надо отнять число карт, количество которых необходимо для одного апгрейда
+            var cardWithConditions = playerCards.Find(
+                x => x.localId == localId && x.level == currentLevel && x.count > minimumForUpgrade - 1);
 
+            if (cardWithConditions != null)
+            {
+                playerCards[localId].count -= minimumForUpgrade;
+                addCardToPlayer( cardWithConditions.cardId, currentLevel+1 );
+            }
+        }
+        
         public void addDeck(DeckType _deckType)
         {    //добавляем колоду
             playerDecks.Add(
@@ -64,6 +79,7 @@ namespace TowerDefence
                 activeDeckID = index;
             };
         }
+        
     }
 
     [Serializable]

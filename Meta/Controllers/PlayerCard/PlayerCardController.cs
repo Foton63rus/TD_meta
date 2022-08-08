@@ -43,19 +43,7 @@ namespace TowerDefence
 
         private void addNewCard( CardInfo cardInfo )
         {
-            //находим карту в открытых картах у игрока с заданным id и уровнем.
-            PlayerCard ExistPlayerCard = _meta.data.playerCards.playerCards.Find( x=> x.cardId == cardInfo.id);
-            if ( ExistPlayerCard == null)
-            {
-                Debug.Log(_meta.data.playerCards.playerCards.Count);
-                _meta.data.playerCards.addCardToPlayer(cardInfo.id);
-                Debug.Log(_meta.data.playerCards.playerCards.Count);
-            }
-            else
-            {
-                ExistPlayerCard.count++;
-                Debug.Log($"card with id: {ExistPlayerCard.cardId} ,count up to 1 = {ExistPlayerCard.count}");
-            }
+            _meta.data.playerCards.addCardToPlayer(cardInfo.id);
         }
 
         private void AddNewCardToView(int cardID, string imageSource)
