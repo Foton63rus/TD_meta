@@ -45,5 +45,13 @@ namespace TowerDefence
             data.gameCurrency.Add(new GameCurrency( Currency.GameMoney, 499));
             data.gameCurrency.Add(new GameCurrency( Currency.RealMoney, 70000));*/
         }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                data.playerCards.addCardToDeck( data.allCardsInfo[2], 0 );
+            }
+        }
     }
 }
