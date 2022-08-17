@@ -13,7 +13,7 @@ namespace TowerDefence
         public List<PlayerCard> playerCards;
         public List<PlayerDeck> playerDecks;
 
-        public readonly int[] minimumForlevelUp = new int[]{3, 2, 3, 5};
+        public readonly int[] minCount4LvlUp = new int[]{3, 2, 3, 5};
 
         public PlayerCard cardByCardIdAndLevel(int _cardId, int _level)
         {// находит карту из имеющихся по карт айди и уровню
@@ -39,27 +39,11 @@ namespace TowerDefence
             }
         }
 
-        /*public void addCartToDeck(int _idFromPlayerCards, int _deckId)
-        {    //добавляет карту, которая открыта у игрока, в колоду, если таковая существует
-            if (playerCards.Find(x => (x.localId == _idFromPlayerCards)) != null)
-            {
-                PlayerDeck deck = playerDecks.Find(x => x.localId == _deckId);
-                if (deck == null)
-                {
-                    return;
-                }
-                else
-                {
-                    deck.addCard(_idFromPlayerCards);
-                }
-            } 
-        }*/
-        
         public void upgradeCardToNextLvl(int localId, int currentLevel)
         {
-            if (currentLevel < minimumForlevelUp.Length - 1)
+            if (currentLevel < minCount4LvlUp.Length - 1)
             {
-                int minimumForUpgrade = minimumForlevelUp[currentLevel];
+                int minimumForUpgrade = minCount4LvlUp[currentLevel];
                 var cardWithConditions = playerCards.Find(
                     x => x.localId == localId && x.level == currentLevel && x.count > minimumForUpgrade - 1);
 
@@ -140,7 +124,7 @@ namespace TowerDefence
     [Serializable]
     public class PlayerDeck
     {
-        public int localId;    //localId
+        public int deckId;    //localId
         public DeckType deckType;
         public List<int> cards;
 
@@ -149,9 +133,9 @@ namespace TowerDefence
             cards.Add(localId);
         }
 
-        public PlayerDeck(int _localId, DeckType _deckType)
+        public PlayerDeck(int _deckId, DeckType _deckType)
         {
-            localId = _localId;
+            deckId = _deckId;
             deckType = _deckType;
             cards = new List<int>();
         }

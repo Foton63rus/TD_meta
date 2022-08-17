@@ -9,17 +9,13 @@ namespace TowerDefence
     public class ShopController : Controller
     {
         private Meta meta;
-        private ShopClient client;
         [SerializeField] private ShopView view;
         [SerializeField] private GameObject ShopSlotPrefab;
         [SerializeField] private TextAsset jsonShopAsset;
-        
-        public Shop shop;
 
         public override void Init(Meta meta)
         {
             this.meta = meta;
-            client = new ShopClient(meta);
             meta.data.shop = JsonUtility.FromJson<Shop>(jsonShopAsset.text);
             view.Init(this, ShopSlotPrefab);
 

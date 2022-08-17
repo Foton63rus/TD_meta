@@ -17,12 +17,12 @@
         }
     ],
     "playerDecks": [{
-            "localId": 0,
+            "deckId": 0,
             "deckType": 0,
             "cards": [0, 1, 2]
         },
         {
-            "localId": 1,
+            "deckId": 1,
             "deckType": 3,
             "cards": [1, 2]
         }
