@@ -3,14 +3,14 @@ using UnityEngine.UI;
 
 namespace TowerDefence
 {
-    public class PlayerCardView : MonoBehaviour
+    public class PlayerDeckView : MonoBehaviour
     {
         public Button nextDeckBtn;
         
         private Transform _transform;
         private PlayerCardController _controller;
         private GameObject _cardPrefab;
-
+        
         public void Init( PlayerCardController controller, GameObject cardPrefab)
         {
             _transform  = transform;
@@ -18,7 +18,7 @@ namespace TowerDefence
             _cardPrefab = cardPrefab;
             
             MetaEvents.OnPlayerCardsClearAll  += OnPlayerCardsClearAllHandler;
-            MetaEvents.OnPlayerCardDrawNewOne  += OnPlayerCardDrawNewOneHandler;
+            MetaEvents.OnPlayerCardInDeckDrawNewOne  += OnPlayerCardDrawNewOneHandler;
             
             nextDeckBtn.onClick.AddListener(() => { OnNextDeck();});
         }

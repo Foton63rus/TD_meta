@@ -6,7 +6,8 @@ namespace TowerDefence
     public class PlayerCardController : Controller
     {
         private Meta _meta;
-        [SerializeField] private PlayerCardView view;    // Контейнер UI для карт в текущей колоде
+        [SerializeField] private PlayerDeckView playerDeckView;    // Контейнер UI для карт в текущей колоде
+        [SerializeField] private AllPlayerCardsView allPlayerCardsView;    // Контейнер UI для карт в текущей колоде
         [SerializeField] private GameObject playerCardPrefab;
         [SerializeField] private TextAsset allCardsInfoAsset;
         [SerializeField] private TextAsset playerCardsAsset;
@@ -20,13 +21,13 @@ namespace TowerDefence
 
             MetaEvents.OnPlayerCardAdd += addNewCard;
             
-            view.Init( this, playerCardPrefab );    //Инициализация вьюхи
-            
-            ClearPlayerCards();
-            spawnPlayerCards();
+            playerDeckView.Init( this, playerCardPrefab );    //Инициализация вьюхи
+            allPlayerCardsView.Init(this, playerCardPrefab);
+
+            loadDeck();
         }
 
-        void spawnPlayerCards()
+        void spawnPlayerCardsInDeck()
         {
             int cardsCount = _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards.Count;
 
@@ -37,7 +38,7 @@ namespace TowerDefence
                 int globalCardID = playerCard.cardId;
                 string imgPath = _meta.data.allCardsInfo[globalCardID].image;
 
-                AddNewCardToView(globalCardID, imgPath);
+                AddNewCardInDeckToView(globalCardID, imgPath);
             }
         }
 
@@ -46,23 +47,23 @@ namespace TowerDefence
             _meta.data.playerCards.addCardToPlayer(cardInfo.id);
         }
 
-        private void AddNewCardToView(int cardID, string imageSource)
+        private void AddNewCardInDeckToView(int cardID, string imageSource)
         {    //Добавить карту
-            MetaEvents.OnPlayerCardDrawNewOne?.Invoke(new OnPlayerCardDrawNewOneEventArgs(cardID, imageSource));
+            MetaEvents.OnPlayerCardInDeckDrawNewOne?.Invoke(new OnPlayerCardDrawNewOneEventArgs(cardID, imageSource));
         }
-        private void ClearPlayerCards()
-        {    //почистить список карт игрока
+        private void ClearPlayerDeck()
+        {    //почистить список карт в колоде
             MetaEvents.OnPlayerCardsClearAll?.Invoke();
         }
 
-        public void loadDeck(int deckID)
+        public void loadDeck(int deckID = 0)
         {
             if (deckID >= 0 && deckID < _meta.data.playerCards.playerDecks.Count)
             {
                 _meta.data.playerCards.activeDeckID = deckID;
             }
-            ClearPlayerCards();
-            spawnPlayerCards();
+            ClearPlayerDeck();
+            spawnPlayerCardsInDeck();
         }
         
         public void nextDeck()
