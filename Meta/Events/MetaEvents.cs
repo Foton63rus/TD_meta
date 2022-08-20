@@ -5,8 +5,8 @@ namespace TowerDefence
 {
     public static class MetaEvents
     {
-        public static UnityAction OnPlayerCardsClearAll; //Событие очистки карт игрока (отрисовка)
-        public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnAllCardSpawnOne; // Собятие для отрисовки всех карт в вьюхе
+        public static UnityAction OnPlayerDeckClearAll; //Событие очистки карт игрока (отрисовка)
+        public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardDrawNewOne; // Собятие для отрисовки всех карт в вьюхе
         
         public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardInDeckDrawNewOne; //Событие добавления карты (отрисовка)
         public static UnityAction<CardInfo> OnPlayerCardAdd;

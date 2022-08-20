@@ -21,10 +21,11 @@ namespace TowerDefence
 
             MetaEvents.OnPlayerCardAdd += addNewCard;
             
-            playerDeckView.Init( this, playerCardPrefab );    //Инициализация вьюхи
-            allPlayerCardsView.Init(this, playerCardPrefab);
+            playerDeckView.Init( this, playerCardPrefab );    //Инициализация вьюхи деки
+            allPlayerCardsView.Init(this, playerCardPrefab);  //Инициализация вьюхи карт игрока
 
             loadDeck();
+            spawnAllPlayerCards();
         }
 
         void spawnPlayerCardsInDeck()
@@ -42,18 +43,33 @@ namespace TowerDefence
             }
         }
 
-        private void addNewCard( CardInfo cardInfo )
+        public void spawnAllPlayerCards()
+        {
+            int cardsCount = _meta.data.playerCards.playerCards.Count;
+            for (int i = 0; i < cardsCount; i++)
+            {
+                string imgPath = _meta.data.allCardsInfo[i].image;
+
+                AddNewPlayerCard(i, imgPath);
+            }
+        }
+
+        private void addNewCard( CardInfo cardInfo )    //добавление карты например при покупке
         {
             _meta.data.playerCards.addCardToPlayer(cardInfo.id);
         }
 
+        private void AddNewPlayerCard(int cardID, string imageSource)
+        {
+            MetaEvents.OnPlayerCardDrawNewOne?.Invoke(new OnPlayerCardDrawNewOneEventArgs(cardID, imageSource));
+        }
         private void AddNewCardInDeckToView(int cardID, string imageSource)
         {    //Добавить карту
             MetaEvents.OnPlayerCardInDeckDrawNewOne?.Invoke(new OnPlayerCardDrawNewOneEventArgs(cardID, imageSource));
         }
         private void ClearPlayerDeck()
         {    //почистить список карт в колоде
-            MetaEvents.OnPlayerCardsClearAll?.Invoke();
+            MetaEvents.OnPlayerDeckClearAll?.Invoke();
         }
 
         public void loadDeck(int deckID = 0)
@@ -65,7 +81,7 @@ namespace TowerDefence
             ClearPlayerDeck();
             spawnPlayerCardsInDeck();
         }
-        
+
         public void nextDeck()
         {
             int deckID = ++ _meta.data.playerCards.activeDeckID;

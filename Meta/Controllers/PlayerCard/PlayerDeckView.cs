@@ -17,7 +17,7 @@ namespace TowerDefence
             _controller = controller;
             _cardPrefab = cardPrefab;
             
-            MetaEvents.OnPlayerCardsClearAll  += OnPlayerCardsClearAllHandler;
+            MetaEvents.OnPlayerDeckClearAll  += OnPlayerDeckClearAllHandler;
             MetaEvents.OnPlayerCardInDeckDrawNewOne  += OnPlayerCardDrawNewOneHandler;
             
             nextDeckBtn.onClick.AddListener(() => { OnNextDeck();});
@@ -43,7 +43,7 @@ namespace TowerDefence
             AddNewCard(arg.cardID, arg.imageSource);
         }
 
-        public void OnPlayerCardsClearAllHandler()
+        public void OnPlayerDeckClearAllHandler()
         {
             for (int i = _transform.childCount-1; i >= 0 ; i--)
             {

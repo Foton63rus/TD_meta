@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TowerDefence
@@ -22,7 +21,7 @@ namespace TowerDefence
         }
         
         public void addCardToPlayer(int _cardId, int _level = 0, int _count = 1)
-        {    //добавляем карты игроку, если с таким id и уровнем уже существуют, то добавляем нужное кол-во
+        {   //добавляем карты игроку, если с таким id и уровнем уже существуют, то добавляем нужное кол-во
             PlayerCard cardIfPlayerHave = cardByCardIdAndLevel(_cardId, _level);
             if ( cardIfPlayerHave is null )
             {
