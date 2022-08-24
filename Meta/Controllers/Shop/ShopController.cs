@@ -84,7 +84,7 @@ namespace TowerDefence
             {
                 int rndIndex = Random.Range(0, allCardsWithBuyingConditions.Count);
                 CardInfo randomCard = allCardsWithBuyingConditions[rndIndex];
-                Debug.Log($"card: {randomCard.deckType} {randomCard.image}");
+                Debug.Log($"card: {randomCard.id} decktype: {randomCard.deckType} {randomCard.image}");
                 MetaEvents.OnPlayerCardAdd.Invoke( randomCard );
                 return randomCard;
             }

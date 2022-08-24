@@ -18,6 +18,7 @@ namespace TowerDefence
             _cardPrefab = cardPrefab;
             
             MetaEvents.OnPlayerCardDrawNewOne  += OnAllCardSpawnOneHandler;
+            MetaEvents.OnPlayerCardClearView += clear;
         }
 
         public void clear()

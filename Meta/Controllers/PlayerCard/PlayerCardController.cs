@@ -48,15 +48,26 @@ namespace TowerDefence
             int cardsCount = _meta.data.playerCards.playerCards.Count;
             for (int i = 0; i < cardsCount; i++)
             {
-                string imgPath = _meta.data.allCardsInfo[i].image;
+                if (_meta.data.playerCards.playerCards[i].count>0)
+                {
+                    int id = _meta.data.playerCards.playerCards[i].cardId;
+                    string imgPath = _meta.data.allCardsInfo[id].image;
 
-                AddNewPlayerCard(i, imgPath);
+                    AddNewPlayerCard(i, imgPath);
+                }
             }
+        }
+
+        public void refreshPlayerCards()
+        {
+            MetaEvents.OnPlayerCardClearView?.Invoke();
+            spawnAllPlayerCards();
         }
 
         private void addNewCard( CardInfo cardInfo )    //добавление карты например при покупке
         {
             _meta.data.playerCards.addCardToPlayer(cardInfo.id);
+            refreshPlayerCards();
         }
 
         private void AddNewPlayerCard(int cardID, string imageSource)

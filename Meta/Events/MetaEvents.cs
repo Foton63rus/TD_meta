@@ -7,9 +7,9 @@ namespace TowerDefence
     {
         public static UnityAction OnPlayerDeckClearAll; //Событие очистки карт игрока (отрисовка)
         public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardDrawNewOne; // Собятие для отрисовки всех карт в вьюхе
-        
-        public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardInDeckDrawNewOne; //Событие добавления карты (отрисовка)
-        public static UnityAction<CardInfo> OnPlayerCardAdd;
+        public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardInDeckDrawNewOne; //Событие добавления карты для вьюхи (отрисовка)
+        public static UnityAction OnPlayerCardClearView;
+        public static UnityAction<CardInfo> OnPlayerCardAdd; //для контроллера (покупка ии просто добавлние)
     }
     
     //EVENT ARGS
