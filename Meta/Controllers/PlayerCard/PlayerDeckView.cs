@@ -23,24 +23,24 @@ namespace TowerDefence
             nextDeckBtn.onClick.AddListener(() => { OnNextDeck();});
         }
 
-        public void AddNewCard( int globalCardID, string imgPath )
+        public void AddNewCard( PlayerCard playerCard, string imgPath )
         {
             //создаем карту
             GameObject newCard = Instantiate(_cardPrefab, _transform);
             //назначаем картинку для карты
             newCard.GetComponent<Image>().sprite = Resources.Load<Sprite>(imgPath);
             //сохраняем в карте значение её ID
-            newCard.GetComponent<PlayerCardMono>().globalCardID = globalCardID;
+            newCard.GetComponent<PlayerCardMono>().globalCardID = playerCard.cardId;
             //добавляем действия на клик
             newCard.GetComponent<Button>().onClick.AddListener(() =>
             {
-                Debug.Log($"card:{globalCardID}");
+                Debug.Log($"card:{playerCard.cardId}");
             } );
         }
 
         public void OnPlayerCardDrawNewOneHandler(OnPlayerCardDrawNewOneEventArgs arg)
         {
-            AddNewCard(arg.cardID, arg.imageSource);
+            AddNewCard(arg.playerCard, arg.imageSource);
         }
 
         public void OnPlayerDeckClearAllHandler()

@@ -10,17 +10,18 @@ namespace TowerDefence
         public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardInDeckDrawNewOne; //Событие добавления карты для вьюхи (отрисовка)
         public static UnityAction OnPlayerCardClearView;
         public static UnityAction<CardInfo> OnPlayerCardAdd; //для контроллера (покупка ии просто добавлние)
+        public static UnityAction<int> OnTryAddCardToCurrentDeck;
     }
     
     //EVENT ARGS
     [SerializeField] public struct OnPlayerCardDrawNewOneEventArgs
     {
-        public int cardID;
+        public PlayerCard playerCard;
         public string imageSource;
 
-        public OnPlayerCardDrawNewOneEventArgs(int cardID, string imageSource)
+        public OnPlayerCardDrawNewOneEventArgs(PlayerCard playerCard, string imageSource)
         {
-            this.cardID      = cardID;
+            this.playerCard  = playerCard;
             this.imageSource = imageSource;
         }
     }

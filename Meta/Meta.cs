@@ -47,10 +47,7 @@ namespace TowerDefence
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                data.playerCards.addCardToDeck( data.allCardsInfo[2], 0 );
-            }
+            
         }
     }
 }

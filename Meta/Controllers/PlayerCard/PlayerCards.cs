@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -70,36 +69,6 @@ namespace TowerDefence
             };
         }
 
-        public void addCardToDeck( CardInfo cardInfo, int deckId)
-        {
-            if (playerDecks[deckId] == null)
-            {
-                Debug.Log("public void addCardToDeck( int cardId, int deckId): deck with this deckId not Exist");
-            }
-            else
-            {
-                PlayerCard addedCard = playerCards.Find(x => x.cardId == cardInfo.id);
-                if (addedCard == null)
-                {
-                    Debug.Log("public void addCardToDeck( int cardId, int deckId): card with this cardId not Exist");
-                }
-                else
-                {
-                    if ( cardInfo.deckType == playerDecks[deckId].deckType || 
-                         playerDecks[deckId].deckType == DeckType.Common)
-                    {
-                        playerDecks[deckId].addCard(addedCard.localId);
-                        Debug.Log($"added card lId: {addedCard.localId} to deck {deckId}");
-                        //todo разобраться с апгрейдом и добавлением в колоду
-                    }
-                    else
-                    {
-                        Debug.Log($"cardInfo.deckType != playerDecks[deckId].deckType");
-                    }
-                }
-            }
-        }
-        
     }
 
     [Serializable]
