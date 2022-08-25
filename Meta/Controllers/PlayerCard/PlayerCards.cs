@@ -47,7 +47,6 @@ namespace TowerDefence
 
                 if (cardWithConditions != null)
                 {
-                    Debug.Log($"id {cardWithConditions.cardId}, lvl {cardWithConditions.level}");
                     playerCards[localId].count -= minimumForUpgrade;
                     addCardToPlayer( cardWithConditions.cardId, currentLevel+1 );
                     Debug.Log($"id {cardWithConditions.cardId}, lvl {cardWithConditions.level}");

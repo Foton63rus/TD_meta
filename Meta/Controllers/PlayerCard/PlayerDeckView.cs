@@ -35,6 +35,7 @@ namespace TowerDefence
             newCard.GetComponent<Button>().onClick.AddListener(() =>
             {
                 Debug.Log($"card:{playerCard.cardId}");
+                MetaEvents.OnRemoveCardFromDeck.Invoke(playerCard.localId);
             } );
         }
 

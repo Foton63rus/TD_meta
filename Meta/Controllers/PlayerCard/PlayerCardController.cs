@@ -23,6 +23,7 @@ namespace TowerDefence
 
             MetaEvents.OnPlayerCardAdd += addNewCard;
             MetaEvents.OnTryAddCardToCurrentDeck += addCardToCurrentDeck;
+            MetaEvents.OnRemoveCardFromDeck += removeCardFromCurrentDeck;
             
             playerDeckView.Init( this, playerCardPrefab );    //Инициализация вьюхи деки
             allPlayerCardsView.Init(this, playerCardPrefab);  //Инициализация вьюхи карт игрока
@@ -158,6 +159,23 @@ namespace TowerDefence
             _meta.data.playerCards.playerDecks[deckID].addCard(addedCard.localId);
             Debug.Log($"added card lId: {addedCard.localId} to deck {deckID}");
             spawnPlayerCardsInDeck();
+        }
+
+        public void removeCardFromDeck(int localID, int deckID)
+        {
+            if (_meta.data.playerCards.playerCards.Count-1<localID && 
+                _meta.data.playerCards.playerDecks.Count-1<deckID)
+            {
+                return;
+                //new IndexOutOfRangeException("public void removeCardFromDeck(int localID, int deckID) : index out of range");
+            }
+            _meta.data.playerCards.playerDecks[deckID].cards.Remove(localID);
+            spawnPlayerCardsInDeck();
+        }
+
+        public void removeCardFromCurrentDeck(int localID)
+        {
+            removeCardFromDeck(localID, _meta.data.playerCards.activeDeckID);
         }
         
         public void addCardToCurrentDeck(int localID)
