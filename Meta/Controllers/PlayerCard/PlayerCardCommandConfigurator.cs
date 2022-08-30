@@ -1,46 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace TowerDefence
 {
     public class PlayerCardCommandConfigurator
     {    // класс для формирования команд контроллеру
-        private PlayerCardController receiver;
-        private List<int> arguments = new List<int>();
         private ICardCommand command;
         
-        public PlayerCardCommandConfigurator( PlayerCardController receiver)
+        public PlayerCardCommandConfigurator( )
         {    //INIT
-            this.receiver = receiver;
             refresh();
         }
 
-        private void refresh()
+        public void refresh()
         {
-            command = null;
-            arguments.Clear();
+            command  = null;
         }
 
-        public void Execute(int[] args)
-        {
+        public void Execute(int arg = 0)
+        {   
             if (command == null)
             {
-                if (args == null || args.Length == 0)
+                if (arg < 0)
                 {
                     return;
                 }
                 else
                 {
-                    arguments.Clear();
-                    arguments.AddRange(args);
+                    Debug.Log("не выбрано действий");
+                    return;
                 }
-                
             }
             else
             {
-                command.Execute(args);
+                command.Execute(arg);
             }
         }
 
@@ -83,9 +75,9 @@ namespace TowerDefence
             this.controller = controller;
         }
 
-        public void Execute(int[] args)
+        public void Execute(int arg)
         {
-            controller.addCardToCurrentDeck( args[0] );
+            controller.addCardToCurrentDeck( arg );
         }
 
         public void Undo()
@@ -108,9 +100,9 @@ namespace TowerDefence
             this.controller = controller;
         }
 
-        public void Execute(int[] args)
+        public void Execute(int arg)
         {
-            controller.removeCardFromCurrentDeck( args[0] );
+            controller.removeCardFromCurrentDeck( arg );
         }
 
         public void Undo()
@@ -123,6 +115,30 @@ namespace TowerDefence
             return "COMRemoveCardFromCurrentDeck";
         }
     }
+
+    public class COMUpgradeCard : ICardCommand
+    {
+        private PlayerCardController controller;
+
+        public COMUpgradeCard(PlayerCardController controller)
+        {
+            this.controller = controller;
+        }
+        public void Execute(int arg)
+        {
+            controller.upgradeCard(arg);
+        }
+
+        public void Undo()
+        {
+            
+        }
+        
+        public override string ToString()
+        {
+            return "COMUpgradeCard";
+        }
+    }
     
     public class COMNextDeck : ICardCommand
     {
@@ -133,9 +149,10 @@ namespace TowerDefence
             this.controller = controller;
         }
 
-        public void Execute(int[] args = null)
+        public void Execute(int arg)
         {
             controller.nextDeck( );
+            controller.commandConfigurator.refresh();
         }
 
         public void Undo()
@@ -151,7 +168,7 @@ namespace TowerDefence
     
     public interface ICardCommand
     {
-        void Execute(int[] args = null);
+        void Execute(int arg);
         void Undo();
         string ToString();
     }

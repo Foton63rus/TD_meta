@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace TowerDefence
 {
@@ -11,7 +10,7 @@ namespace TowerDefence
         public List<PlayerCard> playerCards;
         public List<PlayerDeck> playerDecks;
 
-        public readonly int[] minCount4LvlUp = new int[]{3, 2, 3, 5};
+        public readonly int[] minCount4LvlUp = new int[]{2, 3, 4, 5};
 
         public PlayerCard cardByCardIdAndLevel(int _cardId, int _level)
         {// находит карту из имеющихся по карт айди и уровню
@@ -33,27 +32,10 @@ namespace TowerDefence
             else
             {
                 cardIfPlayerHave.count += _count;
-                upgradeCardToNextLvl(cardIfPlayerHave.localId, cardIfPlayerHave.level);
+                //upgradeCardToNextLvl(cardIfPlayerHave.localId, cardIfPlayerHave.level);
             }
         }
 
-        public void upgradeCardToNextLvl(int localId, int currentLevel)
-        {
-            if (currentLevel < minCount4LvlUp.Length - 1)
-            {
-                int minimumForUpgrade = minCount4LvlUp[currentLevel];
-                var cardWithConditions = playerCards.Find(
-                    x => x.localId == localId && x.level == currentLevel && x.count > minimumForUpgrade - 1);
-
-                if (cardWithConditions != null)
-                {
-                    playerCards[localId].count -= minimumForUpgrade;
-                    addCardToPlayer( cardWithConditions.cardId, currentLevel+1 );
-                    Debug.Log($"id {cardWithConditions.cardId}, lvl {cardWithConditions.level}");
-                }
-            }
-        }
-        
         public void addDeck(DeckType _deckType)
         {    //добавляем колоду
             playerDecks.Add(

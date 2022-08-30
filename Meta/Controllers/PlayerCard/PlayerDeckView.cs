@@ -6,8 +6,9 @@ namespace TowerDefence
     public class PlayerDeckView : MonoBehaviour
     {
         public Button nextDeckBtn;
-        public Button addCardToCurrentDeck;
-        public Button removeCardFromCurrentDeck;
+        public Button addCardToCurrentDeckBtn;
+        public Button removeCardFromCurrentDeckBtn;
+        public Button upgradeCardBtn;
         
         private Transform _transform;
         private PlayerCardController _controller;
@@ -24,9 +25,10 @@ namespace TowerDefence
             MetaEvents.OnPlayerDeckClearAll  += OnPlayerDeckClearAllHandler;
             MetaEvents.OnPlayerCardInDeckDrawNewOne  += OnPlayerCardDrawNewOneHandler;
             
-            nextDeckBtn.onClick.AddListener(() => { OnBtnNextDeck();});
-            addCardToCurrentDeck.onClick.AddListener(() => { OnBtnAddCardToCurrentDeck();});
-            removeCardFromCurrentDeck.onClick.AddListener(() => { OnBtnRemoveCardFromCurrentDeck(); });
+            nextDeckBtn.onClick.AddListener(                 () => { OnBtnNextDeck();});
+            addCardToCurrentDeckBtn.onClick.AddListener(     () => { OnBtnAddCardToCurrentDeck();});
+            removeCardFromCurrentDeckBtn.onClick.AddListener(() => { OnBtnRemoveCardFromCurrentDeck(); });
+            upgradeCardBtn.onClick.AddListener(              () => { OnBtnUpgradeCard(); });
         }
 
         public void AddNewCard( PlayerCard playerCard, string imgPath )
@@ -40,9 +42,9 @@ namespace TowerDefence
             //добавляем действия на клик
             newCard.GetComponent<Button>().onClick.AddListener(() =>
             {
-                Debug.Log($"card:{playerCard.cardId}");
+                Debug.Log($"card:{playerCard.cardId} lvl:{playerCard.level}");
                 //MetaEvents.OnRemoveCardFromDeck.Invoke(playerCard.localId);
-                _commandConfigurator.Execute(new []{playerCard.localId});
+                _commandConfigurator.Execute(playerCard.localId);
             } );
         }
 
@@ -62,7 +64,7 @@ namespace TowerDefence
         public void OnBtnNextDeck()
         {
             _commandConfigurator.addCommand(new COMNextDeck(_controller));
-            _commandConfigurator.Execute(null);
+            _commandConfigurator.Execute();
         }
 
         public void OnBtnAddCardToCurrentDeck()
@@ -73,6 +75,11 @@ namespace TowerDefence
         public void OnBtnRemoveCardFromCurrentDeck()
         {
             _commandConfigurator.switchCommand(new COMRemoveCardFromCurrentDeck(_controller));
+        }
+
+        public void OnBtnUpgradeCard()
+        {
+            _commandConfigurator.switchCommand( new COMUpgradeCard(_controller));
         }
     }
 }

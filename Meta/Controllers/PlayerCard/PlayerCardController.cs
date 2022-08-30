@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,7 +6,7 @@ namespace TowerDefence
     public class PlayerCardController : Controller
     {
         private Meta _meta;
-        private PlayerCardCommandConfigurator commandConfigurator;
+        public PlayerCardCommandConfigurator commandConfigurator;
         [SerializeField] private PlayerDeckView playerDeckView;    // Контейнер UI для карт в текущей колоде
         [SerializeField] private AllPlayerCardsView allPlayerCardsView;    // Контейнер UI для карт в текущей колоде
         [SerializeField] private GameObject playerCardPrefab;
@@ -18,7 +16,7 @@ namespace TowerDefence
         public override void Init( Meta meta)
         {
             _meta = meta;
-            commandConfigurator = new PlayerCardCommandConfigurator(this);
+            commandConfigurator = new PlayerCardCommandConfigurator();
             
             meta.data.allCardsInfo = JsonUtility.FromJson<AllCardsInfo>(allCardsInfoAsset.text);
             meta.data.playerCards = JsonUtility.FromJson<PlayerCards>(playerCardsAsset.text);
@@ -63,6 +61,36 @@ namespace TowerDefence
                     AddNewPlayerCard(_meta.data.playerCards.playerCards[i], imgPath);
                 }
             }
+        }
+
+        public void upgradeCard(int localId)
+        {
+            PlayerCard currentCard = _meta.data.playerCards.playerCards.Find(x => x.localId == localId);
+            int currentLevel = currentCard.level;
+
+            if (currentLevel <= _meta.data.playerCards.minCount4LvlUp.Length - 1)
+            {
+                int minCount4Upgrade = _meta.data.playerCards.minCount4LvlUp[currentCard.level];
+                int currentCardCount = currentCard.count;
+
+                if (currentCardCount >= minCount4Upgrade)
+                {
+                    currentCard.count = currentCardCount - minCount4Upgrade;
+                    _meta.data.playerCards.addCardToPlayer(localId, currentLevel+1);
+                    refreshPlayerCards();
+                    spawnPlayerCardsInDeck();
+                    Debug.Log("апгрейд !!!");
+                }
+                else
+                {
+                    Debug.Log("недостаточно карт для апгрейда");
+                }
+            }
+            else
+            {
+                Debug.Log("максимальный уровень");
+            }
+            
         }
 
         public void refreshPlayerCards()
