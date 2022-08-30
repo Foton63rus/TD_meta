@@ -8,6 +8,7 @@ namespace TowerDefence
     public class PlayerCardController : Controller
     {
         private Meta _meta;
+        private PlayerCardCommandConfigurator commandConfigurator;
         [SerializeField] private PlayerDeckView playerDeckView;    // Контейнер UI для карт в текущей колоде
         [SerializeField] private AllPlayerCardsView allPlayerCardsView;    // Контейнер UI для карт в текущей колоде
         [SerializeField] private GameObject playerCardPrefab;
@@ -17,16 +18,16 @@ namespace TowerDefence
         public override void Init( Meta meta)
         {
             _meta = meta;
+            commandConfigurator = new PlayerCardCommandConfigurator(this);
             
             meta.data.allCardsInfo = JsonUtility.FromJson<AllCardsInfo>(allCardsInfoAsset.text);
             meta.data.playerCards = JsonUtility.FromJson<PlayerCards>(playerCardsAsset.text);
 
             MetaEvents.OnPlayerCardAdd += addNewCard;
-            MetaEvents.OnTryAddCardToCurrentDeck += addCardToCurrentDeck;
             MetaEvents.OnRemoveCardFromDeck += removeCardFromCurrentDeck;
             
-            playerDeckView.Init( this, playerCardPrefab );    //Инициализация вьюхи деки
-            allPlayerCardsView.Init(this, playerCardPrefab);  //Инициализация вьюхи карт игрока
+            playerDeckView.Init(this, commandConfigurator, playerCardPrefab );    //Инициализация вьюхи деки
+            allPlayerCardsView.Init(this, commandConfigurator, playerCardPrefab);  //Инициализация вьюхи карт игрока
 
             loadDeck();
             spawnAllPlayerCards();

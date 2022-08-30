@@ -8,12 +8,16 @@ namespace TowerDefence
     public class AllPlayerCardsView : MonoBehaviour
     {
         private Transform _transform;
+        private PlayerCardCommandConfigurator _commandConfigurator;
         private PlayerCardController _controller;
         private GameObject _cardPrefab;
          
-        public void Init( PlayerCardController controller, GameObject cardPrefab)
+        public void Init( PlayerCardController controller, 
+            PlayerCardCommandConfigurator commandConfigurator,
+            GameObject cardPrefab)
         {
             _transform = transform;
+            _commandConfigurator = commandConfigurator;
             _controller = controller;
             _cardPrefab = cardPrefab;
             
@@ -41,7 +45,7 @@ namespace TowerDefence
             newCard.GetComponent<Button>().onClick.AddListener(() =>
             {
                 Debug.Log($"card:{playerCard}");
-                MetaEvents.OnTryAddCardToCurrentDeck?.Invoke(playerCard.localId);
+                _commandConfigurator.Execute(new []{playerCard.localId});
             } );
         }
 
