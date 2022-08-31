@@ -13,7 +13,7 @@ namespace TowerDefence
 
         public void refresh()
         {
-            command  = null;
+            command = null;
         }
 
         public void Execute(int arg = 0)

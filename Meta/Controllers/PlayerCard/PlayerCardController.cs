@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ namespace TowerDefence
 
         void spawnPlayerCardsInDeck()
         {
-            cleanEmptyCardsInDeck();
+            _meta.data.playerCards.SortCurrentDeck();
             ClearPlayerDeck();
             int cardsCount = _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards.Count;
 
@@ -41,9 +42,9 @@ namespace TowerDefence
             {
                 int localCardID = _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards[i];
                 PlayerCard playerCard = _meta.data.playerCards.playerCards[localCardID];
+                
                 int globalCardID = playerCard.cardId;
                 string imgPath = _meta.data.allCardsInfo[globalCardID].image;
-
                 AddNewCardInDeckToView(playerCard, imgPath);
             }
         }
@@ -124,22 +125,8 @@ namespace TowerDefence
             {
                 _meta.data.playerCards.activeDeckID = deckID;
             }
+            _meta.data.playerCards.SortCurrentDeck();
             spawnPlayerCardsInDeck();
-        }
-
-        private void cleanEmptyCardsInDeck()
-        {
-            int cardsCount = _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards.Count;
-
-            for (int i = cardsCount - 1; i >= 0; i--)
-            {
-                int localCardID = _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards[i];
-                PlayerCard playerCard = _meta.data.playerCards.playerCards[localCardID];
-                if (playerCard.count < 1)
-                {
-                    _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards.Remove(i);
-                }
-            }
         }
 
         public void addCardToDeck(int localID, int deckID)

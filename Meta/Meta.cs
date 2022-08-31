@@ -34,8 +34,8 @@ namespace TowerDefence
 
         private void fakeCurrencyLoad()
         {
-            data.gameCurrency.Add(10);    //Currency.Free
-            data.gameCurrency.Add(3);     //Currency.Ads
+            data.gameCurrency.Add(1000);    //Currency.Free
+            data.gameCurrency.Add(300);     //Currency.Ads
             data.gameCurrency.Add(499);   //Currency.GameMoney
             data.gameCurrency.Add(70000); //Currency.RealMoney
 
