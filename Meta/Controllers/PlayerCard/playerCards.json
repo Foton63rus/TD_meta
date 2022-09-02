@@ -1,19 +1,16 @@
 {
     "playerCards": [{
-            "localId": 0,
+            "UID": 0,
             "cardId": 2,
-            "level": 0,
-            "count": 1
+            "level": 0
         }, {
-            "localId": 1,
+            "UID": 1,
             "cardId": 1,
-            "level": 0,
-            "count": 1
+            "level": 0
         }, {
-            "localId": 2,
+            "UID": 2,
             "cardId": 0,
-            "level": 0,
-            "count": 1
+            "level": 0
         }
     ],
     "playerDecks": [{

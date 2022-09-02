@@ -42,9 +42,9 @@ namespace TowerDefence
             //добавляем действия на клик
             newCard.GetComponent<Button>().onClick.AddListener(() =>
             {
-                Debug.Log($"card:{playerCard.cardId} lvl:{playerCard.level}");
+                Debug.Log($"card:{playerCard.cardId} lvl:{playerCard.level} uid:{playerCard.UID}");
                 //MetaEvents.OnRemoveCardFromDeck.Invoke(playerCard.localId);
-                _commandConfigurator.Execute(playerCard.localId);
+                _commandConfigurator.Execute(playerCard.UID);
             } );
         }
 
@@ -79,6 +79,7 @@ namespace TowerDefence
 
         public void OnBtnUpgradeCard()
         {
+            _controller.refreshUpgrList();
             _commandConfigurator.switchCommand( new COMUpgradeCard(_controller));
         }
     }

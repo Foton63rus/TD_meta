@@ -44,8 +44,8 @@ namespace TowerDefence
             //добавляем действия на клик
             newCard.GetComponent<Button>().onClick.AddListener(() =>
             {
-                Debug.Log($"card:{playerCard}");
-                _commandConfigurator.Execute(playerCard.localId);
+                Debug.Log($"card:{playerCard.cardId} lvl:{playerCard.level} uid:{playerCard.UID}");
+                _commandConfigurator.Execute(playerCard.UID);
             } );
         }
 

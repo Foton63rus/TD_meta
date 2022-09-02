@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace TowerDefence
 {
@@ -13,65 +14,62 @@ namespace TowerDefence
 
         public readonly int[] minCount4LvlUp = new int[]{2, 3, 4, 5};
 
+        public PlayerCard this[int UID]
+        {
+            get { return playerCards.Find(x => x.UID == UID); }
+        }
+
         public PlayerCard GetCardByCardIdAndLevel(int _cardId, int _level)
         {// находит карту из имеющихся по карт айди и уровню
-            return playerCards.Find((x) => 
+            return this.playerCards.Find((x) => 
                 x.cardId == _cardId && x.level == _level);
         }
         
-        public void addCardToPlayer(int _cardId, int _level = 0, int _count = 1)
-        {   //добавляем карты игроку, если с таким id и уровнем уже существуют, то добавляем нужное кол-во
-            PlayerCard cardIfPlayerHave = GetCardByCardIdAndLevel(_cardId, _level);
-            if ( cardIfPlayerHave is null )
+        public PlayerCard addCardToPlayer(int _cardId, int _level = 0)
+        {   //добавляем карты игроку
+            PlayerCard newCard = new PlayerCard(playerCards.Max( x => x.UID)+1 , _cardId, _level);
+            playerCards.Add(newCard);
+            Debug.Log($"added card id: {newCard.cardId}, lvl: {newCard.level}, uid: {newCard.UID}");
+            return newCard;
+        }
+
+        public List<PlayerCard> GetCardsByGID(int GID)
+        {
+            return playerCards.FindAll(x => x.cardId == GID);
+        }
+
+        public List<PlayerCard> GetCardsByUID(int UID)
+        {
+            PlayerCard thisCard = playerCards.Find(x => x.UID == UID);
+            if (thisCard != null)
             {
-                playerCards.Add(new PlayerCard(
-                    playerCards.Count,
-                    _cardId,
-                    _level,
-                    _count)); 
+                return GetCardsByGID(thisCard.cardId);
             }
             else
             {
-                cardIfPlayerHave.count += _count;
+                return null;
             }
         }
 
+        public int GetCountByGID(int GID)
+        {
+            return GetCardsByGID(GID).Count;
+        }
+
+        public int GetCountByUID(int UID)
+        {
+            return GetCardsByUID(UID).Count;
+        }
+        
         private List<PlayerCard> playerCardsSortedByLevel()
         {
-            return playerCards.OrderByDescending(x => x.level).OrderBy(x => x.cardId).Where(x => x.count != 0).ToList();
+            return playerCards.OrderByDescending(x => x.level).OrderBy(x => x.cardId).ToList();
         }
 
-        public void SortCurrentDeck()
+        public void RefreshCurrentDeck()
         {
-            List<PlayerCard> playerCardsSortedByLevel = this.playerCardsSortedByLevel();
-            List<int> tmpDeck = new List<int>(); 
-            List<int> sortedDeck = new List<int>();
-            
-            //формируется список временной колоды с глобальными id, чтобы искать повторения
-            foreach (int localID in playerDecks[activeDeckID].cards)
-            {    
-                PlayerCard card = playerCards.Find(x => x.localId == localID);
-                if (card != null)
-                {
-                    tmpDeck.Add(card.cardId); 
-                }
-            }
-
-            foreach (int GID in tmpDeck)
-            {
-                PlayerCard card = playerCardsSortedByLevel.Find(x => x.cardId == GID);
-                if (card.count > 1)
-                {
-                    card.count--;
-                }
-                else // card.count == 1, меньше не может быть, так как тут удаляем, а до этого отфильтровали в playerCardsSortedByLevel() по count == 0
-                {
-                    playerCardsSortedByLevel.Remove(card);
-                }
-                sortedDeck.Add( card.localId );
-            }
-            playerDecks[activeDeckID].cards.Clear();
-            playerDecks[activeDeckID].cards.AddRange( sortedDeck );
+            //Удаляем карты, UID которых отсутствует в playerCards
+            playerDecks[activeDeckID].cards.RemoveAll(x => !playerCards.Exists(y => y.UID == x));
         }
 
         public void addDeck(DeckType _deckType)
@@ -87,24 +85,20 @@ namespace TowerDefence
                 activeDeckID = index;
             };
         }
-
     }
 
     [Serializable]
     public class PlayerCard
     {
-        public int localId; //- ID внутри списка карт игрока (те, которые открыл)
+        public int UID; //- ID внутри списка карт игрока (те, которые открыл)
         public int cardId;    //- ID в списке всех карт
         public int level;
-        public int count;
-        
 
-        public PlayerCard(int _localId, int _cardId, int _level = 0, int _count = 1)
+        public PlayerCard(int _uid, int _cardId, int _level = 0)
         {
-            localId = _localId;
+            UID = _uid;
             cardId = _cardId;
             level = _level;
-            count = _count;
         }
     }
         
@@ -115,9 +109,9 @@ namespace TowerDefence
         public DeckType deckType;
         public List<int> cards;
 
-        public void addCard(int localId)
+        public void addCard(int uid)
         {
-            cards.Add(localId);
+            cards.Add(uid);
         }
 
         public PlayerDeck(int _deckId, DeckType _deckType)

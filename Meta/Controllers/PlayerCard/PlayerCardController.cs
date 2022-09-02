@@ -13,6 +13,8 @@ namespace TowerDefence
         [SerializeField] private GameObject playerCardPrefab;
         [SerializeField] private TextAsset allCardsInfoAsset;
         [SerializeField] private TextAsset playerCardsAsset;
+        
+        [SerializeField] private List<int> upgradingdcards = new List<int>();
 
         public override void Init( Meta meta)
         {
@@ -34,14 +36,18 @@ namespace TowerDefence
 
         void spawnPlayerCardsInDeck()
         {
-            _meta.data.playerCards.SortCurrentDeck();
+            _meta.data.playerCards.RefreshCurrentDeck();
             ClearPlayerDeck();
             int cardsCount = _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards.Count;
+            
+            _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards.RemoveAll( 
+                x => !_meta.data.playerCards.playerCards.Exists(y => y.UID == x));
 
             for (int i = 0; i < cardsCount; i++)
             {
-                int localCardID = _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards[i];
-                PlayerCard playerCard = _meta.data.playerCards.playerCards[localCardID];
+                int uid = _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].cards[i];
+                
+                PlayerCard playerCard = _meta.data.playerCards[uid];
                 
                 int globalCardID = playerCard.cardId;
                 string imgPath = _meta.data.allCardsInfo[globalCardID].image;
@@ -54,30 +60,51 @@ namespace TowerDefence
             int cardsCount = _meta.data.playerCards.playerCards.Count;
             for (int i = 0; i < cardsCount; i++)
             {
-                if (_meta.data.playerCards.playerCards[i].count>0)
-                {
-                    int id = _meta.data.playerCards.playerCards[i].cardId;
-                    string imgPath = _meta.data.allCardsInfo[id].image;
+                int id = _meta.data.playerCards.playerCards[i].cardId;
+                string imgPath = _meta.data.allCardsInfo[id].image;
 
-                    AddNewPlayerCard(_meta.data.playerCards.playerCards[i], imgPath);
-                }
+                AddNewPlayerCard(_meta.data.playerCards.playerCards[i], imgPath);
             }
         }
 
-        public void upgradeCard(int localId)
+        public void refreshUpgrList()
         {
-            PlayerCard currentCard = _meta.data.playerCards.playerCards.Find(x => x.localId == localId);
-            int currentLevel = currentCard.level;
-
-            if (currentLevel <= _meta.data.playerCards.minCount4LvlUp.Length - 1)
+            upgradingdcards.Clear();
+            Debug.Log($"upgradingdcards.Count: {upgradingdcards.Count}");
+        }
+        public void upgradeCard(int UID)    //UPGRADE
+        {
+            //не добавляем по второму разу
+            if (upgradingdcards.Contains(UID))
+            {    
+                return;
+            }
+            if (upgradingdcards.Count > 0) 
             {
-                int minCount4Upgrade = _meta.data.playerCards.minCount4LvlUp[currentCard.level];
-                int currentCardCount = currentCard.count;
+                int BaseCardGID = _meta.data.playerCards[upgradingdcards[0]].cardId;
+                //не добавляем карту с отличным GID
+                if (_meta.data.playerCards[UID].cardId != BaseCardGID) { return; }
+            }
+            upgradingdcards.Add(UID);
+            
+            PlayerCard baseCard = _meta.data.playerCards[UID];
+            int currentLevel = baseCard.level;
+            if ( currentLevel <= _meta.data.playerCards.minCount4LvlUp.Length - 1 )
+            {
+                int Count4Upgrade = _meta.data.playerCards.minCount4LvlUp[baseCard.level];
+                int currentCardCount = upgradingdcards.Count;
 
-                if (currentCardCount >= minCount4Upgrade)
+                if (currentCardCount >= Count4Upgrade)
                 {
-                    currentCard.count = currentCardCount - minCount4Upgrade;
-                    _meta.data.playerCards.addCardToPlayer(localId, currentLevel+1);
+                    PlayerCard pc = _meta.data.playerCards.addCardToPlayer( baseCard.cardId, currentLevel + 1 );
+                    _meta.data.playerCards.playerDecks[_meta.data.playerCards.activeDeckID].addCard( pc.UID );
+                    //удаляем карты которые выбирались для апгрейда
+                    foreach (int ups_uid in upgradingdcards)
+                    {
+                        _meta.data.playerCards.playerCards.RemoveAll( x => x.UID == ups_uid );
+                    }
+                    refreshUpgrList();
+                    
                     refreshPlayerCards();
                     spawnPlayerCardsInDeck();
                     Debug.Log("апгрейд !!!");
@@ -91,7 +118,6 @@ namespace TowerDefence
             {
                 Debug.Log("максимальный уровень");
             }
-            
         }
 
         public void refreshPlayerCards()
@@ -115,7 +141,7 @@ namespace TowerDefence
             MetaEvents.OnPlayerCardInDeckDrawNewOne?.Invoke(new OnPlayerCardDrawNewOneEventArgs(playerCard, imageSource));
         }
         private void ClearPlayerDeck()
-        {    //почистить список карт в колоде
+        {    //почистить список карт в колоде (view)
             MetaEvents.OnPlayerDeckClearAll?.Invoke();
         }
 
@@ -125,67 +151,51 @@ namespace TowerDefence
             {
                 _meta.data.playerCards.activeDeckID = deckID;
             }
-            _meta.data.playerCards.SortCurrentDeck();
             spawnPlayerCardsInDeck();
         }
 
-        public void addCardToDeck(int localID, int deckID)
+        public void addCardToDeck(int uid, int deckID)
         {
-            PlayerCard addedCard;
-            if (_meta.data.playerCards.playerCards.Count-1>=localID && 
-                _meta.data.playerCards.playerDecks.Count-1>=deckID)
-            {
-                addedCard = _meta.data.playerCards.playerCards[localID];
-            }
-            else
-            {
-                return;
-            }
-            CardInfo cardInfo = _meta.data.allCardsInfo[addedCard.cardId];
-            if (_meta.data.playerCards.playerDecks[deckID] == null)
-            {
-                Debug.Log("public void addCardToDeck( int cardId, int deckId): deck with this deckId not Exist");
-                return;
-            }
+            PlayerCard addedCard = _meta.data.playerCards[uid];
             if (addedCard == null)
             {
                 Debug.Log("public void addCardToDeck( int cardId, int deckId): card with this cardId not Exist");
                 return;
             }
 
-            if (addedCard.count <= 0)
+            CardInfo cardInfo = _meta.data.allCardsInfo[addedCard.cardId];
+            if (_meta.data.playerCards.playerDecks[deckID] == null)
             {
-                Debug.Log("public void addCardToDeck( int cardId, int deckId): count of cards <= 0");
+                Debug.Log("public void addCardToDeck( int cardId, int deckId): deck with this deckId not Exist");
                 return;
             }
             if ( !(cardInfo.deckType == _meta.data.playerCards.playerDecks[deckID].deckType || 
-                 _meta.data.playerCards.playerDecks[deckID].deckType == DeckType.Common))
+                   _meta.data.playerCards.playerDecks[deckID].deckType == DeckType.Common))
             {
                 Debug.Log($"cardInfo.deckType != playerDecks[deckId].deckType");
                 return;
             }
 
-            int countOfThisCardInDeck = _meta.data.playerCards.playerDecks[deckID].cards.Where(x => x == localID).Count();
-            if (countOfThisCardInDeck+1 > _meta.data.playerCards.playerCards[localID].count)
+            if (_meta.data.playerCards.playerDecks[ _meta.data.playerCards.activeDeckID ].cards.Exists( x => x == uid))
             {
-                Debug.Log($"добавлено максимальное количество карт");
+                Debug.Log($"Такая карта уже есть (uid:{uid})");
                 return;
             }
-            Debug.Log($"cur count: {countOfThisCardInDeck}");
-            _meta.data.playerCards.playerDecks[deckID].addCard(addedCard.localId);
-            Debug.Log($"added card lId: {addedCard.localId} to deck {deckID}");
+            
+            _meta.data.playerCards.playerDecks[deckID].addCard(addedCard.UID);
+            Debug.Log($"added card lId: {addedCard.UID} to deck {deckID}");
             spawnPlayerCardsInDeck();
         }
 
-        public void removeCardFromDeck(int localID, int deckID)
+        public void removeCardFromDeck(int uid, int deckID)
         {
-            if (_meta.data.playerCards.playerCards.Count-1<localID && 
+            if (_meta.data.playerCards.playerCards.Count-1<uid && 
                 _meta.data.playerCards.playerDecks.Count-1<deckID)
             {
                 return;
                 //new IndexOutOfRangeException("public void removeCardFromDeck(int localID, int deckID) : index out of range");
             }
-            _meta.data.playerCards.playerDecks[deckID].cards.Remove(localID);
+            _meta.data.playerCards.playerDecks[deckID].cards.Remove(uid);
             spawnPlayerCardsInDeck();
         }
 
