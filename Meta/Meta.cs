@@ -7,6 +7,8 @@ namespace TowerDefence
     [Serializable]
     public class Meta : MonoBehaviour
     {    // Мета игры
+        public UpgradeTree ugradetree = new UpgradeTree();
+        
         private DataContainer metaData;
         private ControllerContainer controllers;
 

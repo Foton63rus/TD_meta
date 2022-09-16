@@ -193,20 +193,19 @@ namespace TowerDefence
                 _meta.data.playerCards.playerDecks.Count-1<deckID)
             {
                 return;
-                //new IndexOutOfRangeException("public void removeCardFromDeck(int localID, int deckID) : index out of range");
             }
             _meta.data.playerCards.playerDecks[deckID].cards.Remove(uid);
             spawnPlayerCardsInDeck();
         }
 
-        public void removeCardFromCurrentDeck(int localID)
+        public void removeCardFromCurrentDeck(int uid)
         {
-            removeCardFromDeck(localID, _meta.data.playerCards.activeDeckID);
+            removeCardFromDeck(uid, _meta.data.playerCards.activeDeckID);
         }
         
-        public void addCardToCurrentDeck(int localID)
+        public void addCardToCurrentDeck(int uid)
         {
-            addCardToDeck(localID, _meta.data.playerCards.activeDeckID);
+            addCardToDeck(uid, _meta.data.playerCards.activeDeckID);
         }
 
         public void nextDeck()

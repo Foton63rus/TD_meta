@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -72,9 +70,6 @@ namespace TowerDefence
                 currency[(int) slot.currency] = currency[(int) slot.currency] - slot.price;
                 randomCardByDeck( slot );
             }
-
-            //if (currency[ Enum.GetValues( typeof(Currency))[1] ] >= slot.price)
-            return;
         }
 
         private CardInfo randomCardByDeck( CardShopSlot slot )
