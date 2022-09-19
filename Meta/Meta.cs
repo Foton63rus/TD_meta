@@ -8,7 +8,7 @@ namespace TowerDefence
     public class Meta : MonoBehaviour
     {    // Мета игры
         public UpgradeTree ugradetree = new UpgradeTree();
-        
+
         private DataContainer metaData;
         private ControllerContainer controllers;
 
@@ -18,6 +18,8 @@ namespace TowerDefence
         {
             InitMetaData();
             InitControllers();
+            
+            
         }
 
         private void InitMetaData()
@@ -45,6 +47,28 @@ namespace TowerDefence
             data.gameCurrency.Add(new GameCurrency( Currency.Ads, 3));
             data.gameCurrency.Add(new GameCurrency( Currency.GameMoney, 499));
             data.gameCurrency.Add(new GameCurrency( Currency.RealMoney, 70000));*/
+
+            testUTreeCreate();
+        }
+
+        private void testUTreeCreate()
+        {
+            UTNode node = new UTNode();
+            node.Name = "tower force";
+            node.Description = "some force for tower";
+            
+            UTNode node2 = new UTNode();
+            node2.Name = "unit force";
+            node2.Description = "some force for tower";
+
+            ugradetree.AddNode( node );
+            ugradetree.AddNode( node2 );
+            node.SetChild(node2);
+            //ugradetree.Root = node;
+            
+            Debug.Log(node);
+            Debug.Log(node2);
+            Debug.Log(ugradetree);
         }
 
         private void Update()

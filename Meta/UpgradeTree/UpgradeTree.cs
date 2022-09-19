@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace TowerDefence
 {
@@ -41,91 +43,65 @@ namespace TowerDefence
         public void AddNode( UTreeKVPair kvPair)
         {
             UTreeKVPair pair = tree.Find(x => x.Key == kvPair.Key);
+            
             if (pair == null)
             {
                 tree.Add( kvPair );
             }
+
+            if (root == null)
+            {
+                root = kvPair.Value;
+            }
         }
 
-        public void AddNode(string key, UTNode value)
+        public void AddNode(UTNode value)
         {
-            AddNode( new UTreeKVPair( key, value) );
+            AddNode( new UTreeKVPair( value) );
         }
 
         public void RemoveNode( string key)
         {
             tree.RemoveAll(x => x.Key == key);
+            CleanTreeByKey(key);
+        }
+        
+        public void RemoveNode( UTNode node )
+        {
+            string key = node.Name;
+            tree.RemoveAll(x => x.Key == node.Name);
+            CleanTreeByKey( key );
+        }
+
+        private void CleanTreeByKey( string key)
+        {
+            foreach (var pair in tree)
+            {
+                pair.Value.GetAllParents.RemoveAll(x => x.Name == key);
+                pair.Value.GetAllChildrens.RemoveAll(x => x.Name == key);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $@"UTree with Root: {Root}; childscount: {Root.GetAllChildrens.Count}";
         }
     }// class UpgradeTree
     
-    [Serializable]
-    public class UTNode
-    {
-        private UTNode _root;
-        public UTNode Root
-        {
-            get => _root; 
-            internal set => _root = value;
-        }
-        
-        private List<UTNode> _parent = new List<UTNode>();
-        public List<UTNode> GetAllParents
-        {
-            get => _parent;
-        }
-        public UTNode GetParent(int i = 0) { return _parent[i]; }
-
-        public void SetParent(UTNode parentNode)
-        {
-            if (!_parent.Contains(parentNode))
-            {
-                _parent.Add(parentNode);
-            }
-        }
-        
-        public void DeleteParent(UTNode parentNode)
-        {
-            if (_parent.Contains(parentNode))
-            {
-                _parent.Remove(parentNode);
-            }
-        }
-        
-        private List<UTNode> _children;
-        
-        private bool isOpen;
-
-        public bool IsOpen
-        {
-            get => isOpen;
-            set => isOpen = value;
-        }
-
-        private string name;
-        public string Name
-        {
-            get => name;
-            set => name = value;
-        }
-
-        private string description;
-        public string Description
-        {
-            get => description;
-            set => description = value;
-        }
-    }//class UTNode
+    
     
     [Serializable]
     public class UTreeKVPair
     {
+        [SerializeField]
         public string Key;
+        [SerializeField]
         public UTNode Value;
 
-        public UTreeKVPair(string key, UTNode value)
+        public UTreeKVPair( UTNode node )
         {
-            Key = key;
-            Value = value;
+            Key = node.Name;
+            Value = node;
         }
     }//class UTreeKVPair
 }
