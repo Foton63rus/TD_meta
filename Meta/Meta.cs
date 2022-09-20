@@ -64,6 +64,7 @@ namespace TowerDefence
             ugradetree.AddNode( node );
             ugradetree.AddNode( node2 );
             node.SetChild(node2);
+            node.IsOpen = true;
             //ugradetree.Root = node;
             
             Debug.Log(node);
