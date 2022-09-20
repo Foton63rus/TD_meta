@@ -84,7 +84,7 @@ namespace TowerDefence
 
         public override string ToString()
         {
-            return $@"UTree with Root: {Root}; childscount: {Root.GetAllChildrens.Count}";
+            return $"UTree with Root: {Root}";
         }
     }// class UpgradeTree
     

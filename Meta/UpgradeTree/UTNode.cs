@@ -26,12 +26,18 @@ namespace TowerDefence
             return _parent[i];
         }
 
-        public void SetParent(UTNode parentNode)
+        private void setParent(UTNode parentNode)
         {
             if (!_parent.Contains(parentNode))
             {
                 _parent.Add(parentNode);
             }
+        }
+
+        public void SetParent(UTNode parentNode)
+        {
+            setParent(parentNode);
+            parentNode.setChild(this);
         }
 
         public void DeleteParent(UTNode parentNode)
@@ -54,12 +60,18 @@ namespace TowerDefence
             return _children[i];
         }
 
-        public void SetChild(UTNode parentNode)
+        private void setChild(UTNode childNode)
         {
-            if (!_children.Contains(parentNode))
+            if (!_children.Contains(childNode))
             {
-                _children.Add(parentNode);
+                _children.Add(childNode);
             }
+        }
+        
+        public void SetChild(UTNode childNode)
+        {
+            setChild(childNode);
+            childNode.setParent(this);
         }
 
         public void DeleteChild(UTNode parentNode)
