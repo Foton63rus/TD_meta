@@ -7,15 +7,20 @@ namespace TowerDefence
     [Serializable]
     public class UpgradeTree
     {
-        private UTNode root;
-        public UTNode Root
+        [SerializeField]
+        private string root;
+        public string Root
         {
             get => root;
             set
             {
                 root = value;
-                tree.ForEach( x => x.Value.Root = value);
             } 
+        }
+
+        public void SetRoot( UTNode node )
+        {
+            Root = node.Name;
         }
         
         public List<UTreeKVPair> tree = new List<UTreeKVPair>();
@@ -29,8 +34,7 @@ namespace TowerDefence
         {
             get
             {
-                UTreeKVPair pair = tree.Find(x => x.Key == key);
-                return pair == null ? null : pair.Value;
+                return tree.Find(x => x.Key == key)?.Value;
             }
         }
 
@@ -48,9 +52,9 @@ namespace TowerDefence
                 tree.Add( kvPair );
             }
 
-            if (root == null)
+            if (root == null || root == "")
             {
-                root = kvPair.Value;
+                root = kvPair.Value.Name;
             }
         }
 
@@ -62,23 +66,16 @@ namespace TowerDefence
         public void RemoveNode( string key)
         {
             tree.RemoveAll(x => x.Key == key);
-            CleanTreeByKey(key);
+            foreach (var pair in tree)
+            {
+                pair.Value.GetAllParents.RemoveAll(x => x == key);
+                pair.Value.GetAllChildrens.RemoveAll(x => x == key);
+            }
         }
         
         public void RemoveNode( UTNode node )
         {
-            string key = node.Name;
-            tree.RemoveAll(x => x.Key == node.Name);
-            CleanTreeByKey( key );
-        }
-
-        private void CleanTreeByKey( string key)
-        {
-            foreach (var pair in tree)
-            {
-                pair.Value.GetAllParents.RemoveAll(x => x.Name == key);
-                pair.Value.GetAllChildrens.RemoveAll(x => x.Name == key);
-            }
+            RemoveNode( node.Name );
         }
 
         public override string ToString()

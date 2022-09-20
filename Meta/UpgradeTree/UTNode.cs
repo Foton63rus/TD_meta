@@ -8,71 +8,83 @@ namespace TowerDefence
     public class UTNode
     {
         [SerializeField]
-        private UTNode _root;
-        public UTNode Root
-        {
-            get => _root; 
-            internal set => _root = value;
-        }
-        
-        private List<UTNode> _parent;
-        public List<UTNode> GetAllParents
+        private List<string> _parent;
+
+        [SerializeField]
+        private List<string> _children;
+
+        [SerializeField]
+        private bool isOpen;
+
+        [SerializeField]
+        private string name;
+
+        [SerializeField]
+        private string description;
+
+        public List<string> GetAllParents
         {
             get => _parent;
         }
 
-        public UTNode GetParent(int i = 0)
+        public string GetParent(int i = 0)
         {
             return _parent[i];
         }
 
+        private void setParent(string parentName)
+        {
+            _parent.Add(parentName);
+        }
+
         public void SetParent(UTNode parentNode)
         {
-            if (!_parent.Contains(parentNode))
+            if (!_parent.Contains(parentNode.Name))
             {
-                _parent.Add(parentNode);
+                setParent(parentNode.Name);
+                parentNode.SetChild(this);
             }
-            parentNode.SetChild(this);
         }
 
         public void DeleteParent(UTNode parentNode)
         {
-            if (_parent.Contains(parentNode))
+            if (_parent.Contains(parentNode.Name))
             {
-                _parent.Remove(parentNode);
+                _parent.Remove(parentNode.Name);
             }
         }
-        
-        private List<UTNode> _children;
-        
-        public List<UTNode> GetAllChildrens
+
+        public List<string> GetAllChildrens
         {
             get => _children;
         }
 
-        public UTNode GetChildren(int i = 0)
+        public string GetChildren(int i = 0)
         {
             return _children[i];
         }
 
+        private void setChild(string childName)
+        {
+            _children.Add(childName);
+        }
+
         public void SetChild(UTNode childNode)
         {
-            if (!_children.Contains(childNode))
+            if (!_children.Contains(childNode.Name))
             {
-                _children.Add(childNode);
+                setChild(childNode.Name);
                 childNode.SetParent(this);
             }
         }
 
         public void DeleteChild(UTNode parentNode)
         {
-            if (_children.Contains(parentNode))
+            if (_children.Contains(parentNode.Name))
             {
-                _children.Remove(parentNode);
+                _children.Remove(parentNode.Name);
             }
         }
-        
-        private bool isOpen;
 
         public bool IsOpen
         {
@@ -80,14 +92,12 @@ namespace TowerDefence
             set => isOpen = value;
         }
 
-        private string name;
         public string Name
         {
             get => name;
             set => name = value;
         }
 
-        private string description;
         public string Description
         {
             get => description;
@@ -96,13 +106,13 @@ namespace TowerDefence
 
         public override string ToString()
         {
-            return $@"UTNode['{name}: parentscount: {_parent.Count}, childscount: {_children.Count}, isOpen: {IsOpen}']";
+            return $@"UTNode: {name}";
         }
 
         public UTNode()
         {
-            _parent = new List<UTNode>();
-            _children = new List<UTNode>();
+            _parent = new List<string>();
+            _children = new List<string>();
         }
     }//class UTNode
 }
