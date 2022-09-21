@@ -8,6 +8,9 @@ namespace TowerDefence
     public class UpgradeTree
     {
         [SerializeField]
+        private int upgradePoints;
+        
+        [SerializeField]
         private string root;
         public string Root
         {
@@ -78,9 +81,55 @@ namespace TowerDefence
             RemoveNode( node.Name );
         }
 
+        public void AddPoints(int count)
+        {
+            upgradePoints += count;
+        }
+
+        public void OpenNode( string nodeName)
+        {
+            UTNode node = tree.Find(x => x.Key == nodeName)?.Value;
+
+            if (node == null)
+            {
+                Debug.Log("Не нашлось ноды с тким именем");
+                return;
+            }
+
+            if (node.IsOpen)
+            {
+                Debug.Log("Такой апгрейд уже есть");
+                return;
+            }
+
+            bool allParentsIsOpen = true;
+            if (node.GetAllParents.Count > 0)
+            {
+                try
+                {
+                    allParentsIsOpen = node.GetAllParents.TrueForAll
+                        (x => tree.Find(y => y.Key == x).Value.IsOpen);
+                    Debug.Log($"allParentsIsOpen: {allParentsIsOpen}");
+                }
+                catch (Exception e)
+                {
+                    allParentsIsOpen = false;
+                    Debug.Log($"OpenNode exception: ");
+                    return;
+                }
+            }
+            
+            if (upgradePoints >= node.Cost && allParentsIsOpen)
+            {
+                upgradePoints -= node.Cost;
+                node.IsOpen = true;
+                Debug.Log($"node {node} is open: {node.IsOpen}");
+            }
+        }
+
         public override string ToString()
         {
-            return $"UTree with Root: {Root}";
+            return $"UTree with Root: {Root}, {tree}";
         }
     }// class UpgradeTree
     

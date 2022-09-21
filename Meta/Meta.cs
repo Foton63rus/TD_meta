@@ -48,21 +48,24 @@ namespace TowerDefence
             UTNode node = new UTNode();
             node.Name = "utn_towerforce_01";
             node.Description = "some force for tower";
+            node.Cost = 5;
             
             UTNode node2 = new UTNode();
             node2.Name = "utn_unitforce_01";
             node2.Description = "some force for unit";
-
+            node2.Cost = 20;
+            
+            ugradetree.AddPoints(50);
             ugradetree.AddNode( node );
             ugradetree.AddNode( node2 );
             node.SetChild(node2);
-            node.IsOpen = true;
+            //node.IsOpen = true;
             
-            UTLoader loader = new UTLoader();
-            string JSON = loader.Save(ugradetree);
-            UpgradeTree tree2 = loader.Load(JSON);
-            Debug.Log( "tree2" );
-            Debug.Log( tree2 );
+            string JSON = UTLoader.Save(ugradetree);
+            UpgradeTree tree2 = UTLoader.Load(JSON);
+            Debug.Log( JSON );
+            ugradetree.OpenNode("utn_unitforce_01");
+            Debug.Log( ugradetree["utn_unitforce_01"] );
         }
 
         private void Update()

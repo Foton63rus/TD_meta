@@ -8,19 +8,25 @@ namespace TowerDefence
     public class UTNode
     {
         [SerializeField]
-        private List<string> _parent;
+        private string name;
 
         [SerializeField]
-        private List<string> _children;
+        private string description;
+
+        [SerializeField]
+        private string image;
+
+        [SerializeField]
+        private int cost;
 
         [SerializeField]
         private bool isOpen;
 
         [SerializeField]
-        private string name;
+        private List<string> _parent;
 
         [SerializeField]
-        private string description;
+        private List<string> _children;
 
         public List<string> GetAllParents
         {
@@ -86,12 +92,6 @@ namespace TowerDefence
             }
         }
 
-        public bool IsOpen
-        {
-            get => isOpen;
-            set => isOpen = value;
-        }
-
         public string Name
         {
             get => name;
@@ -102,6 +102,18 @@ namespace TowerDefence
         {
             get => description;
             set => description = value;
+        }
+
+        public int Cost
+        {
+            get => cost;
+            internal set => cost = value;
+        }
+
+        public bool IsOpen
+        {
+            get => isOpen;
+            set => isOpen = value;
         }
 
         public override string ToString()
