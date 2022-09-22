@@ -72,7 +72,6 @@ namespace TowerDefence
             foreach (var pair in tree)
             {
                 pair.Value.GetAllParents.RemoveAll(x => x == key);
-                pair.Value.GetAllChildrens.RemoveAll(x => x == key);
             }
         }
         

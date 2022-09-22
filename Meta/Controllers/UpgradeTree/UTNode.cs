@@ -25,9 +25,6 @@ namespace TowerDefence
         [SerializeField]
         private List<string> _parent;
 
-        [SerializeField]
-        private List<string> _children;
-
         public List<string> GetAllParents
         {
             get => _parent;
@@ -48,7 +45,6 @@ namespace TowerDefence
             if (!_parent.Contains(parentNode.Name))
             {
                 setParent(parentNode.Name);
-                parentNode.SetChild(this);
             }
         }
 
@@ -57,38 +53,6 @@ namespace TowerDefence
             if (_parent.Contains(parentNode.Name))
             {
                 _parent.Remove(parentNode.Name);
-            }
-        }
-
-        public List<string> GetAllChildrens
-        {
-            get => _children;
-        }
-
-        public string GetChildren(int i = 0)
-        {
-            return _children[i];
-        }
-
-        private void setChild(string childName)
-        {
-            _children.Add(childName);
-        }
-
-        public void SetChild(UTNode childNode)
-        {
-            if (!_children.Contains(childNode.Name))
-            {
-                setChild(childNode.Name);
-                childNode.SetParent(this);
-            }
-        }
-
-        public void DeleteChild(UTNode parentNode)
-        {
-            if (_children.Contains(parentNode.Name))
-            {
-                _children.Remove(parentNode.Name);
             }
         }
 
@@ -124,7 +88,6 @@ namespace TowerDefence
         public UTNode()
         {
             _parent = new List<string>();
-            _children = new List<string>();
         }
     }//class UTNode
 }

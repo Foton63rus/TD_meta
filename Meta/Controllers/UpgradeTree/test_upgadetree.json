@@ -1,0 +1,57 @@
+{
+	"upgradePoints": 50,
+	"root": "utn_towerforce_01",
+	"tree": [
+		{
+			"Key": "utn_towerforce_01",
+			"Value": {
+				"name": "utn_towerforce_01",
+				"description": "some force for tower",
+				"image": "",
+				"cost": 5,
+				"isOpen": false,
+				"_parent": []
+			}
+		},
+		{
+			"Key": "utn_unitforce_01",
+			"Value": {
+				"name": "utn_unitforce_01",
+				"description": "some force for unit",
+				"image": "",
+				"cost": 10,
+				"isOpen": false,
+				"_parent": [
+					"utn_towerforce_01"
+				]
+			}
+		},
+		{
+			"Key": "utn_unitforce_02",
+			"Value": {
+				"name": "utn_unitforce_02",
+				"description": "some force for unit again",
+				"image": "",
+				"cost": 15,
+				"isOpen": false,
+				"_parent": [
+					"utn_unitforce_01"
+				]
+			}
+		},
+		{
+			"Key": "utn_megaskill",
+			"Value": {
+				"name": "utn_megaskill",
+				"description": "some skill",
+				"image": "",
+				"cost": 20,
+				"isOpen": false,
+				"_parent": [
+					"utn_towerforce_01",
+					"utn_unitforce_02"
+				]
+			}
+		}
+	]
+}
