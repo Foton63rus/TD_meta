@@ -6,6 +6,7 @@ namespace TowerDefence
 {
     public class ShopController : Controller
     {
+        private string address = "shop";
         private Meta meta;
         [SerializeField] private ShopView view;
         [SerializeField] private GameObject ShopSlotPrefab;
@@ -14,13 +15,21 @@ namespace TowerDefence
         public override void Init(Meta meta)
         {
             this.meta = meta;
-            meta.data.shop = JsonUtility.FromJson<Shop>(jsonShopAsset.text);
-            view.Init(this, ShopSlotPrefab);
+            MetaEvents.OnServerJsonResponse += OnServerJsonResponse;
+            MetaEvents.OnServerJsonRequest?.Invoke(address);
 
             spawnShopSlotItems();
             
             ShopEvents.OnTryingToBuy -= buyCard;
             ShopEvents.OnTryingToBuy += buyCard;
+        }
+
+        private void OnServerJsonResponse(string address, string json)
+        {
+            if (this.address == address)
+            {
+                meta.data.shop = JsonUtility.FromJson<Shop>(json);
+            }
         }
         
         void spawnShopSlotItems()

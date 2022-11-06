@@ -6,7 +6,6 @@ namespace TowerDefence
     [Serializable]
     public class Shop
     {    // JSON-Класс магазина (ДАТА)
-    
         //ячейки в магазине
         public List<CardShopSlot> shopSlots;
     }

@@ -8,6 +8,7 @@ namespace TowerDefence
     {    //Upgrade Tree Controller
         public TextAsset JSON;
         public UpgradeTree tree;
+        public IUpgradeTree UTInterface;
         public override void Init(Meta meta)
         {
             tree = new UpgradeTree();

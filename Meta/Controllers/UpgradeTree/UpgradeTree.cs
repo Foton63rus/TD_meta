@@ -12,6 +12,7 @@ namespace TowerDefence
         
         [SerializeField]
         private string root;
+        
         public string Root
         {
             get => root;
@@ -91,13 +92,13 @@ namespace TowerDefence
 
             if (node == null)
             {
-                Debug.Log("Не нашлось ноды с тким именем");
+                //Debug.Log("Не нашлось ноды с тким именем");
                 return;
             }
 
             if (node.IsOpen)
             {
-                Debug.Log("Такой апгрейд уже есть");
+                //Debug.Log("Такой апгрейд уже есть");
                 return;
             }
 
@@ -108,12 +109,12 @@ namespace TowerDefence
                 {
                     allParentsIsOpen = node.GetAllParents.TrueForAll
                         (x => tree.Find(y => y.Key == x).Value.IsOpen);
-                    Debug.Log($"allParentsIsOpen: {allParentsIsOpen}");
+                    //Debug.Log($"allParentsIsOpen: {allParentsIsOpen}");
                 }
                 catch (Exception e)
                 {
                     allParentsIsOpen = false;
-                    Debug.Log($"OpenNode exception: ");
+                    //Debug.Log($"OpenNode exception: ");
                     return;
                 }
             }
@@ -122,7 +123,7 @@ namespace TowerDefence
             {
                 upgradePoints -= node.Cost;
                 node.IsOpen = true;
-                Debug.Log($"node {node} is open: {node.IsOpen}");
+                //Debug.Log($"node {node} is open: {node.IsOpen}");
             }
         }
 

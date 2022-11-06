@@ -1,13 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization.Tables;
 
 namespace TowerDefence
 {
     [Serializable]
     public class Meta : MonoBehaviour
     {    // Мета игры
-        public UpgradeTree ugradetree = new UpgradeTree();
-
         private DataContainer metaData;
         private ControllerContainer controllers;
 
@@ -17,6 +16,8 @@ namespace TowerDefence
         {
             InitMetaData();
             InitControllers();
+
+            MetaEvents.OnMetaLoaded?.Invoke();
         }
 
         private void InitMetaData()
@@ -29,11 +30,6 @@ namespace TowerDefence
         {    //Инициализация Контроллеров
             controllers = GetComponent<ControllerContainer>();
             controllers.Init(this);
-        }
-
-        private void Update()
-        {
-            
         }
     }
 }

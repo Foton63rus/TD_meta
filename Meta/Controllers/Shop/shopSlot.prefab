@@ -293,11 +293,15 @@ MonoBehaviour:
   goFooterPrice: {fileID: 4012017269440409947}
   goCurrency: {fileID: 1541409944667541119}
   slotInfo:
-    visible: 0
+    shopSlot:
+      slotType: 0
+      deckType: 0
+      cardType: 0
+      currency: 0
+      price: 0
     imgPath: 
-    currency: 0
-    price: 0
-    cardType: 0
+    indexInShopSlot: 0
+  indexInShopSlot: 0
 --- !u!1 &4012017269440409947
 GameObject:
   m_ObjectHideFlags: 0

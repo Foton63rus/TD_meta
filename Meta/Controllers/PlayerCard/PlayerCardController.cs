@@ -27,8 +27,8 @@ namespace TowerDefence
             MetaEvents.OnPlayerCardAdd += addNewCard;
             MetaEvents.OnRemoveCardFromDeck += removeCardFromCurrentDeck;
             
-            playerDeckView.Init(this, commandConfigurator, playerCardPrefab );    //Инициализация вьюхи деки
-            allPlayerCardsView.Init(this, commandConfigurator, playerCardPrefab);  //Инициализация вьюхи карт игрока
+            playerDeckView?.Init(this, commandConfigurator, playerCardPrefab??null );    //Инициализация вьюхи деки
+            allPlayerCardsView?.Init(this, commandConfigurator, playerCardPrefab??null);  //Инициализация вьюхи карт игрока
 
             loadDeck();
             spawnAllPlayerCards();
