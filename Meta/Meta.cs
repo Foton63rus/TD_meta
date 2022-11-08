@@ -18,8 +18,7 @@ namespace TowerDefence
             InitControllers();
 
             MetaEvents.OnMetaLoaded?.Invoke();
-            Debug.Log( "gameCurrency" );
-            Debug.Log(JsonUtility.ToJson( data.gameCurrency ));
+            Debug.Log( $"gameCurrency {JsonUtility.ToJson( data.gameCurrency )}" );
         }
 
         private void InitMetaData()

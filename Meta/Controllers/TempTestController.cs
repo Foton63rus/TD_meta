@@ -17,12 +17,7 @@ namespace TowerDefence
 
         private void OnServerJsonResponse(string addr, string resp)
         {
-            if (addr == "0_test")
-            {
-                Debug.Log( $"resp test" );
-                List<int> a = JsonUtility.FromJson<List<int>>(resp);
-                Debug.Log( $"{a[2]}" );
-            }
+            
         }
 
         private void fakeCurrencyLoad(Meta meta)
