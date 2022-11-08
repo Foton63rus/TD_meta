@@ -6,6 +6,8 @@ namespace TowerDefence
 {
     public class PlayerCardController : Controller
     {
+        private string address_all_cards;
+        private string address_player_cards;
         private Meta _meta;
         public PlayerCardCommandConfigurator commandConfigurator;
         [SerializeField] private PlayerDeckView playerDeckView;    // Контейнер UI для карт в текущей колоде
@@ -18,20 +20,45 @@ namespace TowerDefence
 
         public override void Init( Meta meta)
         {
+            address_all_cards = "all_cards";
+            address_player_cards = "player_cards";
             _meta = meta;
             commandConfigurator = new PlayerCardCommandConfigurator();
             
-            meta.data.allCardsInfo = JsonUtility.FromJson<AllCardsInfo>(allCardsInfoAsset.text);
-            meta.data.playerCards = JsonUtility.FromJson<PlayerCards>(playerCardsAsset.text);
+            //todo как появиться ui - надо будт раскомментить 
 
+            MetaEvents.OnServerJsonResponse += Deserialize;
             MetaEvents.OnPlayerCardAdd += addNewCard;
             MetaEvents.OnRemoveCardFromDeck += removeCardFromCurrentDeck;
-            
-            playerDeckView?.Init(this, commandConfigurator, playerCardPrefab??null );    //Инициализация вьюхи деки
-            allPlayerCardsView?.Init(this, commandConfigurator, playerCardPrefab??null);  //Инициализация вьюхи карт игрока
 
-            loadDeck();
-            spawnAllPlayerCards();
+            RequestAllCards();
+            RequestPlayerCards();
+            
+            //playerDeckView?.Init(this, commandConfigurator, playerCardPrefab??null );    //Инициализация вьюхи деки
+            //allPlayerCardsView?.Init(this, commandConfigurator, playerCardPrefab??null);  //Инициализация вьюхи карт игрока
+        }
+
+        public void RequestAllCards()
+        {
+            MetaEvents.OnServerJsonRequest.Invoke(address_all_cards);
+        }
+        public void RequestPlayerCards()
+        {
+            MetaEvents.OnServerJsonRequest.Invoke(address_player_cards);
+        }
+
+        public void Deserialize(string address, string response)
+        {
+            if (address == address_all_cards)
+            {
+                _meta.data.allCardsInfo = JsonUtility.FromJson<AllCardsInfo>(response);
+                //spawnAllPlayerCards();
+            }
+            else if (address == address_player_cards)
+            {
+                _meta.data.playerCards = JsonUtility.FromJson<PlayerCards>(response);
+                //loadDeck();
+            }
         }
 
         void spawnPlayerCardsInDeck()

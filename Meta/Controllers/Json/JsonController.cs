@@ -28,7 +28,7 @@ public class JsonController : Controller
                     Debug.LogError("HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    Debug.Log("Received: " + webRequest.downloadHandler.text);
+                    //Debug.Log("Received: " + webRequest.downloadHandler.text);
                     response = webRequest.downloadHandler.text;
                     MetaEvents.OnServerJsonResponse?.Invoke(urlPostFix, response);
                     break;

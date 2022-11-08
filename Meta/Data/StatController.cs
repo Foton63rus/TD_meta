@@ -26,11 +26,7 @@ public class StatController : Controller
     {
         write( EventType.MetaLoaded );
     }
-
-    private void OnGameEnemyKill(int arg0)
-    {
-        write(EventType.GameEnemyKill, arg0.ToString());
-    }
+    
 }
 
 [Serializable]

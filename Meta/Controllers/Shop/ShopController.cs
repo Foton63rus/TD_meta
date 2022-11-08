@@ -10,7 +10,6 @@ namespace TowerDefence
         private Meta meta;
         [SerializeField] private ShopView view;
         [SerializeField] private GameObject ShopSlotPrefab;
-        [SerializeField] private TextAsset jsonShopAsset;
 
         public override void Init(Meta meta)
         {
