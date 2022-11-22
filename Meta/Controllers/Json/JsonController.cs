@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 public class JsonController : Controller
 {
     private string jsonUrl;
-    public string response;
+    private string response;
     public override void Init(Meta meta)
     {
-        MetaEvents.OnServerJsonRequest += OnServerJsonRequest;
+        MetaEvents.OnGetRequest += OnGetRequest;
         jsonUrl = meta.data.jsonUrl;
     }
 
@@ -31,11 +31,12 @@ public class JsonController : Controller
                     //Debug.Log("Received: " + webRequest.downloadHandler.text);
                     response = webRequest.downloadHandler.text;
                     MetaEvents.OnServerJsonResponse?.Invoke(urlPostFix, response);
+                    MetaEvents.OnWebResponse?.Invoke(urlPostFix, response);
                     break;
             }
         }
     }
-    public void OnServerJsonRequest(string urlPostFix)
+    public void OnGetRequest(string urlPostFix)
     {
         StartCoroutine(GetRequest(urlPostFix));
     }

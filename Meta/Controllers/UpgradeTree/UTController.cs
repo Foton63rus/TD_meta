@@ -13,7 +13,7 @@ namespace TowerDefence
         {
             address = "upgrade_tree";
             MetaEvents.OnServerJsonResponse += OnServerJsonResponse;
-            MetaEvents.OnServerJsonRequest.Invoke( address );
+            MetaEvents.OnGetRequest.Invoke( address );
         }
 
         public void OnServerJsonResponse(string addr, string resp)

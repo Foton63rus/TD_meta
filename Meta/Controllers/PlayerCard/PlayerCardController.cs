@@ -28,8 +28,8 @@ namespace TowerDefence
             //todo как появиться ui - надо будт раскомментить 
 
             MetaEvents.OnServerJsonResponse += Deserialize;
-            MetaEvents.OnPlayerCardAdd += addNewCard;
-            MetaEvents.OnRemoveCardFromDeck += removeCardFromCurrentDeck;
+            //MetaEvents.OnPlayerCardAdd += addNewCard;
+            //MetaEvents.OnRemoveCardFromDeck += removeCardFromCurrentDeck;
 
             RequestAllCards();
             RequestPlayerCards();
@@ -40,11 +40,11 @@ namespace TowerDefence
 
         public void RequestAllCards()
         {
-            MetaEvents.OnServerJsonRequest.Invoke(address_all_cards);
+            MetaEvents.OnGetRequest.Invoke(address_all_cards);
         }
         public void RequestPlayerCards()
         {
-            MetaEvents.OnServerJsonRequest.Invoke(address_player_cards);
+            MetaEvents.OnGetRequest.Invoke(address_player_cards);
         }
 
         public void Deserialize(string address, string response)

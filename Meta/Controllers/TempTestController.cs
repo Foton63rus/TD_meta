@@ -10,29 +10,39 @@ namespace TowerDefence
         public override void Init(Meta meta)
         {
             this.meta = meta;
-            fakeCurrencyLoad(meta);
-            MetaEvents.OnServerJsonRequest.Invoke("0_test");
+
+            MetaEvents.OnGetRequest.Invoke($"mirror?id={123354}");
             MetaEvents.OnServerJsonResponse += OnServerJsonResponse;
         }
 
         private void OnServerJsonResponse(string addr, string resp)
         {
-            
+            Debug.Log(resp);
         }
 
-        private void fakeCurrencyLoad(Meta meta)
-        {
-            meta.data.gameCurrency.Add(1000);    //Currency.Free
-            meta.data.gameCurrency.Add(300);     //Currency.Ads
-            meta.data.gameCurrency.Add(499);   //Currency.GameMoney
-            meta.data.gameCurrency.Add(70000); //Currency.RealMoney
-        }
-        
         public void Update()
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-
+                //var obj = Activator.CreateInstance(Type.GetType("TowerDefence.Coin"));
+                //Debug.Log($"type:{obj.GetType()}");
+                
+                Product product = new Product( );
+                product.cards = new[] {new PlayerCard(1, 1, 0)};
+                Debug.Log(JsonUtility.ToJson(product));
+            }
+        }
+        public interface IInterface
+        {
+            public int getAmount();
+        }
+        [Serializable]
+        public class MyClass : IInterface
+        {
+            public int amount = 5;
+            public int getAmount()
+            {
+                return amount;
             }
         }
     }

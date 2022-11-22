@@ -1,101 +1,33 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace TowerDefence
 {
     public class ShopController : Controller
     {
         private string address = "shop";
+        private string token = "test_token_pjewggor32c7634g0669c1j8e701je10";
         private Meta meta;
-        [SerializeField] private ShopView view;
-        [SerializeField] private GameObject ShopSlotPrefab;
 
         public override void Init(Meta meta)
         {
             this.meta = meta;
-            MetaEvents.OnServerJsonResponse += OnServerJsonResponse;
-            MetaEvents.OnServerJsonRequest?.Invoke(address);
-
-            spawnShopSlotItems();
-            
-            ShopEvents.OnTryingToBuy -= buyCard;
-            ShopEvents.OnTryingToBuy += buyCard;
+            MetaEvents.OnWebResponse += OnWebResponse;
+            MetaEvents.OnGetRequest?.Invoke(address);
         }
 
-        private void OnServerJsonResponse(string address, string json)
+        private void OnWebResponse(string address, string json)
         {
             if (this.address == address)
             {
                 meta.data.shop = JsonUtility.FromJson<Shop>(json);
             }
         }
-        
-        void spawnShopSlotItems()
+
+        private void BannerClick()
         {
-            int slotsCount = meta.data.shop.shopSlots.Count;
-            ClearShopSlots();
-        
-            for (int i = 0; i < slotsCount; i++)
-            {
-                SlotType visible = meta.data.shop.shopSlots[i].slotType;
-                string imgPath;
-                if (visible == SlotType.Hidden)
-                {
-                    imgPath = "Shirt_stripes_01";
-                }
-                else
-                {
-                    imgPath = "Shirt_stripes_01"; // тут потом заменить на подгружаемую
-                }
-                AddNewSlotItem( new OnShopSlotAddNewEventArgs( meta.data.shop.shopSlots[i], imgPath, i ));
-            }
+            
         }
 
-        private void AddNewSlotItem(OnShopSlotAddNewEventArgs args)
-        {    //Добавить карту
-            ShopEvents.OnShopSlotAddNew?.Invoke( args);
-        }
-        private void ClearShopSlots()
-        {    //почистить слоты магазина
-            ShopEvents.OnShopSlotsClearAll?.Invoke();
-        }
-
-        public void buyCard(OnTryingToBuyEventArgs args)
-        {
-            CardShopSlot slot = meta.data.shop.shopSlots[args.indexInShopList];
-            var currency = meta.data.gameCurrency;
-
-            if ( (slot.currency == Currency.Free || slot.currency == Currency.Ads) && 
-                 currency[(int) slot.currency] > 0)
-            {
-                currency[(int) slot.currency] = currency[(int) slot.currency] - 1;
-                randomCardByDeck( slot );
-            }
-            else if ( (slot.currency == Currency.GameMoney || slot.currency == Currency.RealMoney) && 
-                      currency[(int) slot.currency] >= slot.price)
-            {
-                currency[(int) slot.currency] = currency[(int) slot.currency] - slot.price;
-                randomCardByDeck( slot );
-            }
-        }
-
-        private CardInfo randomCardByDeck( CardShopSlot slot )
-        {
-            List<CardInfo> allCardsWithBuyingConditions = meta.data.allCardsInfo.cards.FindAll(x => x.deckType == slot.deckType);
-            if (allCardsWithBuyingConditions.Count > 0)
-            {
-                int rndIndex = Random.Range(0, allCardsWithBuyingConditions.Count);
-                CardInfo randomCard = allCardsWithBuyingConditions[rndIndex];
-                Debug.Log($"card: {randomCard.id} decktype: {randomCard.deckType} {randomCard.image}");
-                MetaEvents.OnPlayerCardAdd.Invoke( randomCard );
-                return randomCard;
-            }
-            else
-            {    //Debug.Log("Не нашлось карт с таким типом колоды");
-                MetaEvents.OnPlayerCardAdd.Invoke( null );
-                return null;
-            }
-        }
     }
 }

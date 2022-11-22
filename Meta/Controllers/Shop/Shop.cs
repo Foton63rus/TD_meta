@@ -1,45 +1,24 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace TowerDefence
 {
     [Serializable]
     public class Shop
-    {    // JSON-Класс магазина (ДАТА)
-        //ячейки в магазине
-        public List<CardShopSlot> shopSlots;
-    }
-
-    [Serializable]
-    public class CardShopSlot
-    {    //ячейка
-        public SlotType slotType;    // visible = 1 | hidden = 0 - содержание ячейки видно (лицевая часть) или нет (рубашка)
-        public DeckType deckType;    // тип колоды Common = 0, People = 1, Mag = 2, Mech = 3
-        public CardType cardType;    // тип карты Tower = 0, Unit = 1, Hero = 2, Spell = 3
-        public Currency currency;    // Валюта Free = 0, Ads = 1, GameMoney = 2, RealMoney = 3
-        public int price;            // Цена
-    }
-
-    [Serializable]
-    public enum SlotType
     {
-        Hidden = 0,
-        Visible = 1
-    }
+        [SerializeField] private List<ShopBanner> _shop_banners = new List<ShopBanner>();
 
-    [Serializable]
-    public enum Currency
-    {
-        Free = 0,
-        Ads = 1,
-        GameMoney = 2,
-        RealMoney = 3
-    }
+        public Shop( List<ShopBanner> shop_banners )
+        {
+            _shop_banners = shop_banners;
+        }
 
-    [Serializable]
-    public class CardsSet
-    {
-        public CardRarity cardRarity;
-        public int number;
+        public ShopBanner this[int i]
+        {
+            get { return _shop_banners[i]; }
+            set { _shop_banners[i] = value; }
+        }
     }
 }
+
