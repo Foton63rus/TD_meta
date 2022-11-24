@@ -32,7 +32,6 @@ namespace TowerDefence
 
         public IEnumerator GetRequest( URL requestedURL )
         {
-            Debug.Log($"url:{requestedURL}");
             using (UnityWebRequest webRequest = UnityWebRequest.Get( requestedURL.Get() ))
             {
                 yield return webRequest.SendWebRequest();
@@ -72,11 +71,10 @@ namespace TowerDefence
         public URL(string url, string address, string token, string[] args)
         {
             this.address = address;
-            string strArgs = "";
+            string strArgs = $"?token={token}";
 
             if (args != null && args.Length > 0)
             {
-                strArgs = $"?token={token}";
                 for (int i = 0; i < args.Length; i++)
                 {
                     strArgs += $",{args[i]}";

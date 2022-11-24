@@ -10,25 +10,12 @@ namespace TowerDefence
         public override void Init(Meta meta)
         {
             this.meta = meta;
-            MetaEvents.WebGetRequest?.Invoke($"mirror?id={123354}");
-            
-            // MetaEvents.WebGetRequest += WebRequest;
-            // MetaEvents.WebGetRequestWithArgs += WebRequestWithArgs;
+            MetaEvents.WebGetRequest?.Invoke($"mirror");
             MetaEvents.OnWebResponse += OnWebResponse;
-        }
-
-        private void WebRequest(string addr)
-        {
-            meta.Web.Get(addr);
-        }
-        private void WebRequestWithArgs(string addr, string[] args)
-        {
-            meta.Web.Get(addr, args);
         }
 
         private void OnWebResponse(string addr, string resp)
         {
-            // Debug.Log(resp);
         }
 
         public void Update()
