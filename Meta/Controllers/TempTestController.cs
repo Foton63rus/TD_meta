@@ -39,18 +39,5 @@ namespace TowerDefence
                 //Debug.Log($"type:{obj.GetType()}");
             }
         }
-        public interface IInterface
-        {
-            public int getAmount();
-        }
-        [Serializable]
-        public class MyClass : IInterface
-        {
-            public int amount = 5;
-            public int getAmount()
-            {
-                return amount;
-            }
-        }
     }
 }

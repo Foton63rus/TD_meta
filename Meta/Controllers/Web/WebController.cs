@@ -32,6 +32,7 @@ namespace TowerDefence
 
         public IEnumerator GetRequest( URL requestedURL )
         {
+            Debug.Log($"url:{requestedURL}");
             using (UnityWebRequest webRequest = UnityWebRequest.Get( requestedURL.Get() ))
             {
                 yield return webRequest.SendWebRequest();

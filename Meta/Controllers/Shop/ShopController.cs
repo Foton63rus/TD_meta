@@ -19,6 +19,7 @@ namespace TowerDefence
 
         private void OnWebResponse(string address, string json)
         {
+            Debug.Log($"addr:{address}, json:{json}");
             if (this.address == address)
             {//
                 meta.data.shop = JsonUtility.FromJson<Shop>(json);
@@ -38,7 +39,7 @@ namespace TowerDefence
         
         private void BannerClick(int unique_id)
         {
-            meta.Web.Get( addressBuyBanner, new string[]{unique_id.ToString()} );
+            meta.Web.Get( $"{addressBuyBanner}{unique_id}" );
             //MetaEvents.WebGetRequestWithArgs?.Invoke( addressBuyBanner, new string[]{unique_id.ToString()} );
         }
 
