@@ -12,11 +12,12 @@ namespace TowerDefence
         public override void Init(Meta meta)
         {
             address = "upgrade_tree";
-            MetaEvents.OnServerJsonResponse += OnServerJsonResponse;
-            MetaEvents.OnGetRequest.Invoke( address );
+            MetaEvents.OnWebResponse += OnWebResponse;
+            meta.Web.Get(address);
+            //MetaEvents.WebGetRequest?.Invoke(address);
         }
 
-        public void OnServerJsonResponse(string addr, string resp)
+        public void OnWebResponse(string addr, string resp)
         {
             if (address == addr)
             {

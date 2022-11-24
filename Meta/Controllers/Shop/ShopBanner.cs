@@ -6,6 +6,7 @@ namespace TowerDefence
     public class ShopBanner
     {
         public int unique_id;
+        public int count;
         public string image;
         public string header;
         public string description;

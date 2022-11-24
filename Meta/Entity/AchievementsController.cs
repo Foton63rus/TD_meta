@@ -7,11 +7,12 @@ public class AchievementsController : Controller
     public Achievements Achievements = new Achievements();
     public override void Init(Meta meta)
     {
-        MetaEvents.OnServerJsonResponse += OnServerJsonResponse;
-        MetaEvents.OnServerJsonRequest?.Invoke("achievements");
+        MetaEvents.OnWebResponse += OnWebResponse;
+        MetaEvents.WebGetRequest?.Invoke(address);
+        //meta.Web.Get(address);
     }
 
-    public void OnServerJsonResponse(string address, string jsontext)
+    public void OnWebResponse(string address, string jsontext)
     {
         if (this.address == address)
         {

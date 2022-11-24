@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Localization.Tables;
 
 namespace TowerDefence
 {
@@ -8,17 +8,17 @@ namespace TowerDefence
     public class Meta : MonoBehaviour
     {    // Мета игры
         private DataContainer metaData;
-        private ControllerContainer controllers;
-
+        public ControllerContainer controllers;
         public Data data;
+        public IWebController Web;
 
         public void Start()
         {
             InitMetaData();
+            Web = GetComponent<WebController>().Initialize(this);
+            
             InitControllers();
-
             MetaEvents.OnMetaLoaded?.Invoke();
-            Debug.Log( $"gameCurrency {JsonUtility.ToJson( data.gameCurrency )}" );
         }
 
         private void InitMetaData()

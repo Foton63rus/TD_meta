@@ -10,14 +10,25 @@ namespace TowerDefence
         public override void Init(Meta meta)
         {
             this.meta = meta;
-
-            MetaEvents.OnGetRequest.Invoke($"mirror?id={123354}");
-            MetaEvents.OnServerJsonResponse += OnServerJsonResponse;
+            MetaEvents.WebGetRequest?.Invoke($"mirror?id={123354}");
+            
+            // MetaEvents.WebGetRequest += WebRequest;
+            // MetaEvents.WebGetRequestWithArgs += WebRequestWithArgs;
+            MetaEvents.OnWebResponse += OnWebResponse;
         }
 
-        private void OnServerJsonResponse(string addr, string resp)
+        private void WebRequest(string addr)
         {
-            Debug.Log(resp);
+            meta.Web.Get(addr);
+        }
+        private void WebRequestWithArgs(string addr, string[] args)
+        {
+            meta.Web.Get(addr, args);
+        }
+
+        private void OnWebResponse(string addr, string resp)
+        {
+            // Debug.Log(resp);
         }
 
         public void Update()
@@ -26,10 +37,6 @@ namespace TowerDefence
             {
                 //var obj = Activator.CreateInstance(Type.GetType("TowerDefence.Coin"));
                 //Debug.Log($"type:{obj.GetType()}");
-                
-                Product product = new Product( );
-                product.cards = new[] {new PlayerCard(1, 1, 0)};
-                Debug.Log(JsonUtility.ToJson(product));
             }
         }
         public interface IInterface

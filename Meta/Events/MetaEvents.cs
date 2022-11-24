@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,21 +7,20 @@ namespace TowerDefence
 {
     public static class MetaEvents
     {
+
         // Meta Events
         public static UnityAction OnMetaLoaded;                        //Когда мета полностью загрузилась
         
+        // WEB REQUESTES
+        public static UnityAction<string> WebGetRequest;
+        public static UnityAction<string, string[]> WebGetRequestWithArgs;
+        public static UnityAction<string, string> OnWebResponse; //Ответ с сервера
+        
         //JSON
-        public static UnityAction<string> OnServerJsonRequest;        //Запрос необходимого json по адресу (постфиксу)
+        //public static UnityAction<string> OnServerJsonRequest;        //Запрос необходимого json по адресу (постфиксу)
         public static UnityAction<string, string> OnServerJsonResponse; //Ответ с сервера
 
-        // UI MENU Events
-        public static UnityAction OnMenuUISettingsClick;    //клик кнопки настроек
-        public static UnityAction OnMenuUIMessagesClick;    //клик кнопки сообщений
-        public static UnityAction OnMenuUIAchievementsClick;    //клик кнопки достижений
-        public static UnityAction OnMenuUIDeckChoiceClick;    //клик кнопки выбора колоды
-        public static UnityAction OnMenuUIMapChoiceClick;    //клик кнопки выбора карты
-        
-        //Shop evens
+        //Shop events
         
         //Achievemnts events
         public static UnityAction OnAchievement;
@@ -30,8 +31,6 @@ namespace TowerDefence
         public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardDrawNewOne; // Собятие для отрисовки всех карт в вьюхе
         public static UnityAction<OnPlayerCardDrawNewOneEventArgs> OnPlayerCardInDeckDrawNewOne; //Событие добавления карты для вьюхи (отрисовка)
         public static UnityAction OnPlayerCardClearView; //Событие очистки карт игрока (отрисовка)
-        public static UnityAction<CardInfo> OnPlayerCardAdd; //для контроллера (покупка ии просто добавлние)
-        public static UnityAction<int> OnRemoveCardFromDeck; //Удалить карту из колоды
 
         //Game Events
         
