@@ -12,6 +12,8 @@ namespace TowerDefence
             this.meta = meta;
             MetaEvents.WebGetRequest?.Invoke($"mirror");
             MetaEvents.OnWebResponse += OnWebResponse;
+
+            TestFunction();
         }
 
         private void OnWebResponse(string addr, string resp)
@@ -25,6 +27,11 @@ namespace TowerDefence
                 //var obj = Activator.CreateInstance(Type.GetType("TowerDefence.Coin"));
                 //Debug.Log($"type:{obj.GetType()}");
             }
+        }
+
+        public void TestFunction()
+        {
+            
         }
     }
 }

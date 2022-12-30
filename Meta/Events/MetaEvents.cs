@@ -21,6 +21,7 @@ namespace TowerDefence
         public static UnityAction<string, string> OnServerJsonResponse; //Ответ с сервера
 
         //Shop events
+        public static UnityAction<int> BannerClicked;
         
         //Achievemnts events
         public static UnityAction OnAchievement;

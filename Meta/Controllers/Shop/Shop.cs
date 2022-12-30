@@ -7,11 +7,13 @@ namespace TowerDefence
     [Serializable]
     public class Shop
     {
-        [SerializeField] private List<ShopBanner> _shop_banners = new List<ShopBanner>();
+        [SerializeField] public List<ShopBanner> _shop_banners = new List<ShopBanner>();
+        [SerializeField] public List<ShopBannerRow> _banner_rows = new List<ShopBannerRow>();
 
-        public Shop( List<ShopBanner> shop_banners )
+        public Shop( List<ShopBanner> shop_banners, List<ShopBannerRow> banner_rows)
         {
             _shop_banners = shop_banners;
+            _banner_rows = banner_rows;
         }
 
         public ShopBanner this[int i]

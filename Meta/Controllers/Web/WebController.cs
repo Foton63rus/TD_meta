@@ -46,6 +46,7 @@ namespace TowerDefence
                         break;
                     case UnityWebRequest.Result.Success:
                         response = webRequest.downloadHandler.text;
+                        Debug.Log($"response: {response}");
                         MetaEvents.OnServerJsonResponse?.Invoke(requestedURL.GetLocalAddress(), response);
                         MetaEvents.OnWebResponse?.Invoke(requestedURL.GetLocalAddress(), response);
                         break;
