@@ -24,18 +24,18 @@ namespace TowerDefence
             return gb;
         }
 
-        public GroupBox AddBanner( GroupBox row, int unique_id, Sprite background ,int price, string discount, int count )
+        public GroupBox AddSimpleBanner( GroupBox row, int unique_id, Sprite background ,int price, string discount, int count )
         {
             GroupBox banner = new GroupBox();
             banner.AddToClassList("banner_item");
             banner.style.backgroundImage = new StyleBackground( background );
             row.Add(banner); 
             
-            Label priceLabel = new Label($"prise: {price}");
+            Label priceLabel = new Label($"{price}");
             priceLabel.AddToClassList("banner_price");
             banner.Add( priceLabel );
             
-            Label discountLabel = new Label($"Discount: {discount}");
+            Label discountLabel = new Label($"{discount}");
             discountLabel.AddToClassList("banner_discount");
             banner.Add( discountLabel );
             

@@ -18,7 +18,7 @@ namespace TowerDefence
 
         public override void Init( Meta meta )
         {
-            url = meta.data.url;
+            url = meta.data.route.url;
             token = meta.data.token;
             MetaEvents.WebGetRequest += Get;
             MetaEvents.WebGetRequestWithArgs += Get;

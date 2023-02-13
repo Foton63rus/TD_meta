@@ -20,12 +20,13 @@ namespace TowerDefence
 
         public override void Init( Meta meta)
         {
-            address_all_cards = "all_cards";
-            address_player_cards = "player_cards";
+            //address_all_cards = "all_cards";
+            //address_player_cards = "player_cards";
             _meta = meta;
-            commandConfigurator = new PlayerCardCommandConfigurator();
+            address_all_cards = meta.data.route.all_cards;
+            address_player_cards = meta.data.route.player_cards;
             
-            //todo как появиться ui - надо будт раскомментить 
+            commandConfigurator = new PlayerCardCommandConfigurator();
 
             MetaEvents.OnWebResponse += Deserialize;
             //MetaEvents.OnPlayerCardAdd += addNewCard;

@@ -11,6 +11,8 @@ namespace TowerDefence
         // Meta Events
         public static UnityAction OnMetaLoaded;                        //Когда мета полностью загрузилась
         
+        public static UnityAction<LoadedAssetGameObject> OnAssetLoaded;
+        
         // WEB REQUESTES
         public static UnityAction<string> WebGetRequest;
         public static UnityAction<string, string[]> WebGetRequestWithArgs;
@@ -38,6 +40,11 @@ namespace TowerDefence
     }
     
     //EVENT ARGS
+    public struct LoadedAssetGameObject
+    {
+        public string AddressableName;
+        public GameObject Asset;
+    }
     [SerializeField] public struct OnPlayerCardDrawNewOneEventArgs
     {
         public PlayerCard playerCard;
@@ -54,5 +61,7 @@ namespace TowerDefence
     {
         MetaLoaded = 0
     }
+    
+    
     
 }
